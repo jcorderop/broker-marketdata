@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+          <PatternLayout pattern="%blue{%d{HH:mm:ss.SSS}} [%t] %highlight{%-5level} %magenta{%c{1.}} - %msg%n"/>
+        </Console>
+
+        <File name="AppAppender" fileName="logs/application.log" immediateFlush="false" append="true">
+          <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+
+        <File name="PricesAppender" fileName="logs/prices.log" >
+          <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level - %msg%n"/>
+        </File>
+        <Async name="AsyncAppender">
+          <AppenderRef ref="PricesAppender"/>
+        </Async>
+    </Appenders>
+    <Loggers>
+
+      <logger name="org.broker" level="debug">
+        <AppenderRef ref="AppAppender"/>
+      </logger>
+      <logger name="io.netty" level="info">
+        <AppenderRef ref="AppAppender"/>
+      </logger>
+      <logger name="io.vertx" level="info">
+        <AppenderRef ref="AppAppender"/>
+      </logger>
+
+      <logger name="org.flywaydb.core" level="info"/>
+
+      <logger name="LoggingVerticle" level="debug">
+        <AppenderRef ref="AsyncAppender" />
+      </logger>
+
+      <Root level="debug">
+        <AppenderRef ref="ConsoleAppender" />
+        <!--
+        <AppenderRef ref="AppAppender"/>
+        -->
+     </Root>
+   </Loggers>
+
+</Configuration>

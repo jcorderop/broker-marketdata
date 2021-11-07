@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:13.1-alpine
+    environment:
+      # Create db
+      POSTGRES_DB: marketdata
+      # Use postgres/secret user/password credentials
+      POSTGRES_PASSWORD: secret
+      # enforce UTC timezone
+      TZ: UTC
+    volumes:
+      - marketdata-data-local:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - marketdata-network
+
+  adminer:
+    image: adminer:4
+    ports:
+      - 8081:8080
+    networks:
+      - marketdata-network
+
+  marketdataservice:
+    image: jcorderop/market-data-service:latest
+    ports:
+      - "8900:8900"
+    networks:
+      - marketdata-network
+
+
+
+# permanent storage of data.
+# > docker volume rm postgres_vertx-stock-broker-data-local
+volumes:
+  marketdata-data-local:
+
+networks:
+  marketdata-network:
