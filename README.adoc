@@ -1,14 +1,14 @@
 = Broker-marketdata
 
 * This component is used to normalize prices from BitMex to internal quotes.
-* It has a client websocket that connects with to BitMex.
+* It has a client websocket that connects to BitMex.
 * Data received is sent via vertx bus to two topics:
 
     Topic: raw_data
         * raw quotes recevied from BitMex are logged asynchronous for audit
 
-* data is normalized into a Google Proto Buffer object and this object is sent
-to another topic
+* Quotes are normalized into a Google Proto Buffer object and this object is sent
+to a different topic simultaneously:
 
    Topic: internal_quotes
         * Two components are reading from this topic
