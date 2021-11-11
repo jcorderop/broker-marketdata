@@ -1,7 +1,5 @@
 package org.broker.marketdata.storage;
 
-import com.jayway.jsonpath.DocumentContext;
-import com.jayway.jsonpath.JsonPath;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
@@ -10,9 +8,8 @@ import io.vertx.sqlclient.Pool;
 import io.vertx.sqlclient.SqlConnection;
 import io.vertx.sqlclient.SqlResult;
 import io.vertx.sqlclient.templates.SqlTemplate;
-import org.broker.marketdata.bus.LocalMessageCodec;
-import org.broker.marketdata.client.WebSocketClientVerticle;
 import org.broker.marketdata.common.VerticleCommon;
+import org.broker.marketdata.configuration.ConfigurationFiles;
 import org.broker.marketdata.configuration.ConfigurationLoader;
 import org.broker.marketdata.configuration.Topics;
 import org.broker.marketdata.protos.Quote;
@@ -24,9 +21,8 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import static org.broker.marketdata.configuration.ConfigurationLoader.*;
+import static org.broker.marketdata.configuration.ConfigurationLoader.getConfigurationThrowableHandler;
 
 public class StorageVerticle extends AbstractVerticle implements VerticleCommon {
 
@@ -34,50 +30,48 @@ public class StorageVerticle extends AbstractVerticle implements VerticleCommon 
 
   private Pool pgPool;
 
+  private final ConfigurationFiles configurationFiles;
+
+  public StorageVerticle(ConfigurationFiles configurationFiles) {
+    this.configurationFiles = configurationFiles;
+  }
+
   @Override
   public void start(final Promise<Void> startPromise) throws Exception {
     deforeStartVerticle(logger, this.getClass().getName());
-    ConfigurationLoader.loadDatabaseConfiguration(vertx)
-      .onFailure(throwable -> {
-        logger.error("Could not load Database configuration, ", throwable.getMessage());
-        throwable.printStackTrace();
-      })
+    ConfigurationLoader.loadDatabaseConfiguration(vertx, configurationFiles)
+      .onFailure(getConfigurationThrowableHandler(startPromise))
       .compose(config -> FlywayMigration.migrate(vertx, config)
-          .onFailure(startPromise::fail)
-          .onSuccess(unused -> {
-            pgPool = DBPools.createPgPool(vertx, config);
-            vertx.eventBus()
-              .<Quote>consumer(Topics.TOPIC_INTERNAL_QUOTE, quote -> store(quote));
-            completeVerticle(startPromise, this.getClass().getName(), logger);
-          }))
+        .onFailure(startPromise::fail)
+        .onSuccess(unused -> {
+          logger.info("Retrieved Configuration {}", config);
+          pgPool = DBPools.createPgPool(vertx, config);
+          vertx.eventBus().consumer(Topics.TOPIC_INTERNAL_QUOTE, this::store);
+          completeVerticle(startPromise, this.getClass().getName(), logger);
+        }))
       .onFailure(throwable -> {
-        logger.error("Non handle exception loading database, ", throwable.getMessage());
+        logger.error("Non handle exception loading database, {}", throwable.getMessage());
         throwable.printStackTrace();
       });
   }
 
   private void store(Message<Quote> quote) {
-    pgPool.withTransaction(sqlConnection -> {
-      return insertQuote(sqlConnection, quote);
-    });
+    pgPool.withTransaction(sqlConnection -> insertQuote(sqlConnection, quote));
   }
-
 
   private Future<SqlResult<Void>> insertQuote(SqlConnection sqlConnection, Message<Quote> body) {
 
     final List<Map<String, Object>> parameterBatch = getParameterBatch(body.body());
 
-    Future<SqlResult<Void>> sqlResultFuture = SqlTemplate.forUpdate(sqlConnection,
+    return SqlTemplate.forUpdate(sqlConnection,
         "INSERT INTO broker.quotes (source, topic, symbol, action, mark_price, bid_price, mid_price, ask_price, volume)" +
           " VALUES (#{source}, #{topic}, #{symbol}, #{action}, #{mark_price}, #{bid_price}, #{mid_price}, #{ask_price}, #{volume})")
       .executeBatch(parameterBatch)
       .onFailure(throwable -> {
-        logger.error("DB error, ",throwable.getMessage());
+        logger.error("DB error, {}", throwable.getMessage());
         throwable.printStackTrace();
       })
       .onSuccess(result -> logger.debug("Stored {}", result.rowCount()));
-
-    return sqlResultFuture;
   }
 
   private List<Map<String, Object>> getParameterBatch(final Quote quote) {

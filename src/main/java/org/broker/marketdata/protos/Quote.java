@@ -7,44 +7,70 @@ package org.broker.marketdata.protos;
  * Protobuf type {@code marketdata.Quote}
  */
 public final class Quote extends
-    com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:marketdata.Quote)
-    QuoteOrBuilder {
-private static final long serialVersionUID = 0L;
+  com.google.protobuf.GeneratedMessageV3 implements
+  // @@protoc_insertion_point(message_implements:marketdata.Quote)
+  QuoteOrBuilder {
+  private static final long serialVersionUID = 0L;
+
   // Use Quote.newBuilder() to construct.
   private Quote(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private Quote() {
-    source_ = "";
-    topic_ = "";
-    symbol_ = "";
-    action_ = "";
-  }
 
-  @java.lang.Override
-  @SuppressWarnings({"unused"})
-  protected java.lang.Object newInstance(
-      UnusedPrivateParameter unused) {
-    return new Quote();
-  }
+  public static final int ACTION_FIELD_NUMBER = 3;
+  public static final int SYMBOL_FIELD_NUMBER = 4;
 
   @java.lang.Override
   public final com.google.protobuf.UnknownFieldSet
   getUnknownFields() {
     return this.unknownFields;
   }
-  private Quote(
+
+  public static final int SOURCE_FIELD_NUMBER = 1;
+  public static final int TOPIC_FIELD_NUMBER = 2;
+  public static final int MARKPRICE_FIELD_NUMBER = 5;
+  private static final com.google.protobuf.Parser<Quote>
+    PARSER = new com.google.protobuf.AbstractParser<Quote>() {
+    @java.lang.Override
+    public Quote parsePartialFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
+      return new Quote(input, extensionRegistry);
+    }
+  };
+  // @@protoc_insertion_point(class_scope:marketdata.Quote)
+  private static final org.broker.marketdata.protos.Quote DEFAULT_INSTANCE;
+
+  static {
+    DEFAULT_INSTANCE = new org.broker.marketdata.protos.Quote();
+  }
+
+  private int bitField0_;
+  private volatile java.lang.Object source_;
+  private volatile java.lang.Object action_;
+  private volatile java.lang.Object topic_;
+  private volatile java.lang.Object symbol_;
+  private double markPrice_;
+
+  private Quote() {
+    source_ = "";
+    topic_ = "";
+    action_ = "";
+    symbol_ = "";
+  }
+
+  private Quote(
+    com.google.protobuf.CodedInputStream input,
+    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+    throws com.google.protobuf.InvalidProtocolBufferException {
     this();
     if (extensionRegistry == null) {
       throw new java.lang.NullPointerException();
     }
     int mutable_bitField0_ = 0;
     com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
+      com.google.protobuf.UnknownFieldSet.newBuilder();
     try {
       boolean done = false;
       while (!done) {
@@ -54,66 +80,66 @@ private static final long serialVersionUID = 0L;
             done = true;
             break;
           case 10: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000001;
-            source_ = bs;
+            java.lang.String s = input.readStringRequireUtf8();
+
+            source_ = s;
             break;
           }
           case 18: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000002;
-            topic_ = bs;
+            java.lang.String s = input.readStringRequireUtf8();
+
+            topic_ = s;
             break;
           }
           case 26: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000004;
-            symbol_ = bs;
+            java.lang.String s = input.readStringRequireUtf8();
+
+            action_ = s;
             break;
           }
           case 34: {
-            com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x00000008;
-            action_ = bs;
+            java.lang.String s = input.readStringRequireUtf8();
+            bitField0_ |= 0x00000001;
+            symbol_ = s;
             break;
           }
           case 41: {
-            bitField0_ |= 0x00000010;
+            bitField0_ |= 0x00000002;
             markPrice_ = input.readDouble();
             break;
           }
           case 49: {
-            bitField0_ |= 0x00000020;
+            bitField0_ |= 0x00000004;
             bidPrice_ = input.readDouble();
             break;
           }
           case 57: {
-            bitField0_ |= 0x00000040;
+            bitField0_ |= 0x00000008;
             midPrice_ = input.readDouble();
             break;
           }
           case 65: {
-            bitField0_ |= 0x00000080;
+            bitField0_ |= 0x00000010;
             askPrice_ = input.readDouble();
             break;
           }
           case 73: {
-            bitField0_ |= 0x00000100;
+            bitField0_ |= 0x00000020;
             volume_ = input.readDouble();
             break;
           }
           case 80: {
-            bitField0_ |= 0x00000200;
+            bitField0_ |= 0x00000040;
             sourceTimestamp_ = input.readInt64();
             break;
           }
           case 88: {
-            bitField0_ |= 0x00000400;
+            bitField0_ |= 0x00000080;
             arrivalTimestamp_ = input.readInt64();
             break;
           }
           case 96: {
-            bitField0_ |= 0x00000800;
+            bitField0_ |= 0x00000100;
             publishTimestamp_ = input.readInt64();
             break;
           }
@@ -136,32 +162,34 @@ private static final long serialVersionUID = 0L;
       makeExtensionsImmutable();
     }
   }
+
   public static final com.google.protobuf.Descriptors.Descriptor
-      getDescriptor() {
+  getDescriptor() {
     return org.broker.marketdata.protos.InternalQuote.internal_static_marketdata_Quote_descriptor;
+  }
+
+  public static org.broker.marketdata.protos.Quote getDefaultInstance() {
+    return DEFAULT_INSTANCE;
+  }
+
+  @java.lang.Override
+  @SuppressWarnings({"unused"})
+  protected java.lang.Object newInstance(
+    UnusedPrivateParameter unused) {
+    return new Quote();
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internalGetFieldAccessorTable() {
+  internalGetFieldAccessorTable() {
     return org.broker.marketdata.protos.InternalQuote.internal_static_marketdata_Quote_fieldAccessorTable
-        .ensureFieldAccessorsInitialized(
-            org.broker.marketdata.protos.Quote.class, org.broker.marketdata.protos.Quote.Builder.class);
+      .ensureFieldAccessorsInitialized(
+        org.broker.marketdata.protos.Quote.class, org.broker.marketdata.protos.Quote.Builder.class);
   }
 
-  private int bitField0_;
-  public static final int SOURCE_FIELD_NUMBER = 1;
-  private volatile java.lang.Object source_;
   /**
-   * <code>required string source = 1;</code>
-   * @return Whether the source field is set.
-   */
-  @java.lang.Override
-  public boolean hasSource() {
-    return ((bitField0_ & 0x00000001) != 0);
-  }
-  /**
-   * <code>required string source = 1;</code>
+   * <code>string source = 1;</code>
+   *
    * @return The source.
    */
   @java.lang.Override
@@ -170,17 +198,17 @@ private static final long serialVersionUID = 0L;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
+      com.google.protobuf.ByteString bs =
+        (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      if (bs.isValidUtf8()) {
-        source_ = s;
-      }
+      source_ = s;
       return s;
     }
   }
+
   /**
-   * <code>required string source = 1;</code>
+   * <code>string source = 1;</code>
+   *
    * @return The bytes for source.
    */
   @java.lang.Override
@@ -188,9 +216,9 @@ private static final long serialVersionUID = 0L;
       getSourceBytes() {
     java.lang.Object ref = source_;
     if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
+      com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString.copyFromUtf8(
+          (java.lang.String) ref);
       source_ = b;
       return b;
     } else {
@@ -198,18 +226,8 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int TOPIC_FIELD_NUMBER = 2;
-  private volatile java.lang.Object topic_;
   /**
-   * <code>required string topic = 2;</code>
-   * @return Whether the topic field is set.
-   */
-  @java.lang.Override
-  public boolean hasTopic() {
-    return ((bitField0_ & 0x00000002) != 0);
-  }
-  /**
-   * <code>required string topic = 2;</code>
+   * <code>string topic = 2;</code>
    * @return The topic.
    */
   @java.lang.Override
@@ -218,17 +236,16 @@ private static final long serialVersionUID = 0L;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
+      com.google.protobuf.ByteString bs =
+        (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      if (bs.isValidUtf8()) {
-        topic_ = s;
-      }
+      topic_ = s;
       return s;
     }
   }
+
   /**
-   * <code>required string topic = 2;</code>
+   * <code>string topic = 2;</code>
    * @return The bytes for topic.
    */
   @java.lang.Override
@@ -236,9 +253,9 @@ private static final long serialVersionUID = 0L;
       getTopicBytes() {
     java.lang.Object ref = topic_;
     if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
+      com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString.copyFromUtf8(
+          (java.lang.String) ref);
       topic_ = b;
       return b;
     } else {
@@ -246,66 +263,9 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int SYMBOL_FIELD_NUMBER = 3;
-  private volatile java.lang.Object symbol_;
   /**
-   * <code>required string symbol = 3;</code>
-   * @return Whether the symbol field is set.
-   */
-  @java.lang.Override
-  public boolean hasSymbol() {
-    return ((bitField0_ & 0x00000004) != 0);
-  }
-  /**
-   * <code>required string symbol = 3;</code>
-   * @return The symbol.
-   */
-  @java.lang.Override
-  public java.lang.String getSymbol() {
-    java.lang.Object ref = symbol_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      if (bs.isValidUtf8()) {
-        symbol_ = s;
-      }
-      return s;
-    }
-  }
-  /**
-   * <code>required string symbol = 3;</code>
-   * @return The bytes for symbol.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getSymbolBytes() {
-    java.lang.Object ref = symbol_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      symbol_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
-  public static final int ACTION_FIELD_NUMBER = 4;
-  private volatile java.lang.Object action_;
-  /**
-   * <code>required string action = 4;</code>
-   * @return Whether the action field is set.
-   */
-  @java.lang.Override
-  public boolean hasAction() {
-    return ((bitField0_ & 0x00000008) != 0);
-  }
-  /**
-   * <code>required string action = 4;</code>
+   * <code>string action = 3;</code>
+   *
    * @return The action.
    */
   @java.lang.Override
@@ -314,27 +274,27 @@ private static final long serialVersionUID = 0L;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
+      com.google.protobuf.ByteString bs =
+        (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      if (bs.isValidUtf8()) {
-        action_ = s;
-      }
+      action_ = s;
       return s;
     }
   }
+
   /**
-   * <code>required string action = 4;</code>
+   * <code>string action = 3;</code>
+   *
    * @return The bytes for action.
    */
   @java.lang.Override
   public com.google.protobuf.ByteString
-      getActionBytes() {
+  getActionBytes() {
     java.lang.Object ref = action_;
     if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
+      com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString.copyFromUtf8(
+          (java.lang.String) ref);
       action_ = b;
       return b;
     } else {
@@ -342,18 +302,9 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int MARKPRICE_FIELD_NUMBER = 5;
-  private double markPrice_;
   /**
    * <code>optional double markPrice = 5;</code>
-   * @return Whether the markPrice field is set.
-   */
-  @java.lang.Override
-  public boolean hasMarkPrice() {
-    return ((bitField0_ & 0x00000010) != 0);
-  }
-  /**
-   * <code>optional double markPrice = 5;</code>
+   *
    * @return The markPrice.
    */
   @java.lang.Override
@@ -363,16 +314,75 @@ private static final long serialVersionUID = 0L;
 
   public static final int BIDPRICE_FIELD_NUMBER = 6;
   private double bidPrice_;
+
   /**
-   * <code>optional double bidPrice = 6;</code>
-   * @return Whether the bidPrice field is set.
+   * <code>optional string symbol = 4;</code>
+   *
+   * @return Whether the symbol field is set.
    */
   @java.lang.Override
-  public boolean hasBidPrice() {
-    return ((bitField0_ & 0x00000020) != 0);
+  public boolean hasSymbol() {
+    return ((bitField0_ & 0x00000001) != 0);
   }
+
+  /**
+   * <code>optional string symbol = 4;</code>
+   *
+   * @return The symbol.
+   */
+  @java.lang.Override
+  public java.lang.String getSymbol() {
+    java.lang.Object ref = symbol_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs =
+        (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      symbol_ = s;
+      return s;
+    }
+  }
+
+  public static final int MIDPRICE_FIELD_NUMBER = 7;
+  private double midPrice_;
+
+  /**
+   * <code>optional string symbol = 4;</code>
+   *
+   * @return The bytes for symbol.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+  getSymbolBytes() {
+    java.lang.Object ref = symbol_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b =
+        com.google.protobuf.ByteString.copyFromUtf8(
+          (java.lang.String) ref);
+      symbol_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  /**
+   * <code>optional double markPrice = 5;</code>
+   *
+   * @return Whether the markPrice field is set.
+   */
+  @java.lang.Override
+  public boolean hasMarkPrice() {
+    return ((bitField0_ & 0x00000002) != 0);
+  }
+
+  public static final int ASKPRICE_FIELD_NUMBER = 8;
+  private double askPrice_;
+
   /**
    * <code>optional double bidPrice = 6;</code>
+   *
    * @return The bidPrice.
    */
   @java.lang.Override
@@ -380,18 +390,22 @@ private static final long serialVersionUID = 0L;
     return bidPrice_;
   }
 
-  public static final int MIDPRICE_FIELD_NUMBER = 7;
-  private double midPrice_;
   /**
-   * <code>optional double midPrice = 7;</code>
-   * @return Whether the midPrice field is set.
+   * <code>optional double bidPrice = 6;</code>
+   *
+   * @return Whether the bidPrice field is set.
    */
   @java.lang.Override
-  public boolean hasMidPrice() {
-    return ((bitField0_ & 0x00000040) != 0);
+  public boolean hasBidPrice() {
+    return ((bitField0_ & 0x00000004) != 0);
   }
+
+  public static final int VOLUME_FIELD_NUMBER = 9;
+  private double volume_;
+
   /**
    * <code>optional double midPrice = 7;</code>
+   *
    * @return The midPrice.
    */
   @java.lang.Override
@@ -399,18 +413,22 @@ private static final long serialVersionUID = 0L;
     return midPrice_;
   }
 
-  public static final int ASKPRICE_FIELD_NUMBER = 8;
-  private double askPrice_;
   /**
-   * <code>optional double askPrice = 8;</code>
-   * @return Whether the askPrice field is set.
+   * <code>optional double midPrice = 7;</code>
+   *
+   * @return Whether the midPrice field is set.
    */
   @java.lang.Override
-  public boolean hasAskPrice() {
-    return ((bitField0_ & 0x00000080) != 0);
+  public boolean hasMidPrice() {
+    return ((bitField0_ & 0x00000008) != 0);
   }
+
+  public static final int SOURCETIMESTAMP_FIELD_NUMBER = 10;
+  private long sourceTimestamp_;
+
   /**
    * <code>optional double askPrice = 8;</code>
+   *
    * @return The askPrice.
    */
   @java.lang.Override
@@ -418,18 +436,22 @@ private static final long serialVersionUID = 0L;
     return askPrice_;
   }
 
-  public static final int VOLUME_FIELD_NUMBER = 9;
-  private double volume_;
   /**
-   * <code>optional double volume = 9;</code>
-   * @return Whether the volume field is set.
+   * <code>optional double askPrice = 8;</code>
+   *
+   * @return Whether the askPrice field is set.
    */
   @java.lang.Override
-  public boolean hasVolume() {
-    return ((bitField0_ & 0x00000100) != 0);
+  public boolean hasAskPrice() {
+    return ((bitField0_ & 0x00000010) != 0);
   }
+
+  public static final int ARRIVALTIMESTAMP_FIELD_NUMBER = 11;
+  private long arrivalTimestamp_;
+
   /**
    * <code>optional double volume = 9;</code>
+   *
    * @return The volume.
    */
   @java.lang.Override
@@ -437,18 +459,22 @@ private static final long serialVersionUID = 0L;
     return volume_;
   }
 
-  public static final int SOURCETIMESTAMP_FIELD_NUMBER = 10;
-  private long sourceTimestamp_;
   /**
-   * <code>optional int64 sourceTimestamp = 10;</code>
-   * @return Whether the sourceTimestamp field is set.
+   * <code>optional double volume = 9;</code>
+   *
+   * @return Whether the volume field is set.
    */
   @java.lang.Override
-  public boolean hasSourceTimestamp() {
-    return ((bitField0_ & 0x00000200) != 0);
+  public boolean hasVolume() {
+    return ((bitField0_ & 0x00000020) != 0);
   }
+
+  public static final int PUBLISHTIMESTAMP_FIELD_NUMBER = 12;
+  private long publishTimestamp_;
+
   /**
    * <code>optional int64 sourceTimestamp = 10;</code>
+   *
    * @return The sourceTimestamp.
    */
   @java.lang.Override
@@ -456,18 +482,31 @@ private static final long serialVersionUID = 0L;
     return sourceTimestamp_;
   }
 
-  public static final int ARRIVALTIMESTAMP_FIELD_NUMBER = 11;
-  private long arrivalTimestamp_;
   /**
-   * <code>optional int64 arrivalTimestamp = 11;</code>
-   * @return Whether the arrivalTimestamp field is set.
+   * <code>optional int64 sourceTimestamp = 10;</code>
+   *
+   * @return Whether the sourceTimestamp field is set.
    */
   @java.lang.Override
-  public boolean hasArrivalTimestamp() {
-    return ((bitField0_ & 0x00000400) != 0);
+  public boolean hasSourceTimestamp() {
+    return ((bitField0_ & 0x00000040) != 0);
   }
+
+  private byte memoizedIsInitialized = -1;
+
+  @java.lang.Override
+  public final boolean isInitialized() {
+    byte isInitialized = memoizedIsInitialized;
+    if (isInitialized == 1) return true;
+    if (isInitialized == 0) return false;
+
+    memoizedIsInitialized = 1;
+    return true;
+  }
+
   /**
    * <code>optional int64 arrivalTimestamp = 11;</code>
+   *
    * @return The arrivalTimestamp.
    */
   @java.lang.Override
@@ -475,18 +514,19 @@ private static final long serialVersionUID = 0L;
     return arrivalTimestamp_;
   }
 
-  public static final int PUBLISHTIMESTAMP_FIELD_NUMBER = 12;
-  private long publishTimestamp_;
   /**
-   * <code>optional int64 publishTimestamp = 12;</code>
-   * @return Whether the publishTimestamp field is set.
+   * <code>optional int64 arrivalTimestamp = 11;</code>
+   *
+   * @return Whether the arrivalTimestamp field is set.
    */
   @java.lang.Override
-  public boolean hasPublishTimestamp() {
-    return ((bitField0_ & 0x00000800) != 0);
+  public boolean hasArrivalTimestamp() {
+    return ((bitField0_ & 0x00000080) != 0);
   }
+
   /**
    * <code>optional int64 publishTimestamp = 12;</code>
+   *
    * @return The publishTimestamp.
    */
   @java.lang.Override
@@ -494,70 +534,147 @@ private static final long serialVersionUID = 0L;
     return publishTimestamp_;
   }
 
-  private byte memoizedIsInitialized = -1;
+  /**
+   * <code>optional int64 publishTimestamp = 12;</code>
+   *
+   * @return Whether the publishTimestamp field is set.
+   */
   @java.lang.Override
-  public final boolean isInitialized() {
-    byte isInitialized = memoizedIsInitialized;
-    if (isInitialized == 1) return true;
-    if (isInitialized == 0) return false;
+  public boolean hasPublishTimestamp() {
+    return ((bitField0_ & 0x00000100) != 0);
+  }
 
-    if (!hasSource()) {
-      memoizedIsInitialized = 0;
-      return false;
-    }
-    if (!hasTopic()) {
-      memoizedIsInitialized = 0;
-      return false;
-    }
-    if (!hasSymbol()) {
-      memoizedIsInitialized = 0;
-      return false;
-    }
-    if (!hasAction()) {
-      memoizedIsInitialized = 0;
-      return false;
-    }
-    memoizedIsInitialized = 1;
-    return true;
+  public static org.broker.marketdata.protos.Quote parseFrom(
+    java.nio.ByteBuffer data)
+    throws com.google.protobuf.InvalidProtocolBufferException {
+    return PARSER.parseFrom(data);
+  }
+
+  public static org.broker.marketdata.protos.Quote parseFrom(
+    java.nio.ByteBuffer data,
+    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+    throws com.google.protobuf.InvalidProtocolBufferException {
+    return PARSER.parseFrom(data, extensionRegistry);
+  }
+
+  public static org.broker.marketdata.protos.Quote parseFrom(
+    com.google.protobuf.ByteString data)
+    throws com.google.protobuf.InvalidProtocolBufferException {
+    return PARSER.parseFrom(data);
+  }
+
+  public static org.broker.marketdata.protos.Quote parseFrom(
+    com.google.protobuf.ByteString data,
+    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+    throws com.google.protobuf.InvalidProtocolBufferException {
+    return PARSER.parseFrom(data, extensionRegistry);
+  }
+
+  public static org.broker.marketdata.protos.Quote parseFrom(byte[] data)
+    throws com.google.protobuf.InvalidProtocolBufferException {
+    return PARSER.parseFrom(data);
+  }
+
+  public static org.broker.marketdata.protos.Quote parseFrom(
+    byte[] data,
+    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+    throws com.google.protobuf.InvalidProtocolBufferException {
+    return PARSER.parseFrom(data, extensionRegistry);
+  }
+
+  public static org.broker.marketdata.protos.Quote parseFrom(java.io.InputStream input)
+    throws java.io.IOException {
+    return com.google.protobuf.GeneratedMessageV3
+      .parseWithIOException(PARSER, input);
+  }
+
+  public static org.broker.marketdata.protos.Quote parseFrom(
+    java.io.InputStream input,
+    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+    throws java.io.IOException {
+    return com.google.protobuf.GeneratedMessageV3
+      .parseWithIOException(PARSER, input, extensionRegistry);
+  }
+
+  public static org.broker.marketdata.protos.Quote parseDelimitedFrom(java.io.InputStream input)
+    throws java.io.IOException {
+    return com.google.protobuf.GeneratedMessageV3
+      .parseDelimitedWithIOException(PARSER, input);
+  }
+
+  public static org.broker.marketdata.protos.Quote parseDelimitedFrom(
+    java.io.InputStream input,
+    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+    throws java.io.IOException {
+    return com.google.protobuf.GeneratedMessageV3
+      .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+  }
+
+  public static org.broker.marketdata.protos.Quote parseFrom(
+    com.google.protobuf.CodedInputStream input)
+    throws java.io.IOException {
+    return com.google.protobuf.GeneratedMessageV3
+      .parseWithIOException(PARSER, input);
+  }
+
+  public static org.broker.marketdata.protos.Quote parseFrom(
+    com.google.protobuf.CodedInputStream input,
+    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+    throws java.io.IOException {
+    return com.google.protobuf.GeneratedMessageV3
+      .parseWithIOException(PARSER, input, extensionRegistry);
+  }
+
+  @java.lang.Override
+  public Builder newBuilderForType() {
+    return newBuilder();
+  }
+
+  public static Builder newBuilder() {
+    return DEFAULT_INSTANCE.toBuilder();
+  }
+
+  public static Builder newBuilder(org.broker.marketdata.protos.Quote prototype) {
+    return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
 
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
-                      throws java.io.IOException {
-    if (((bitField0_ & 0x00000001) != 0)) {
+    throws java.io.IOException {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(source_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 1, source_);
     }
-    if (((bitField0_ & 0x00000002) != 0)) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(topic_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, topic_);
     }
-    if (((bitField0_ & 0x00000004) != 0)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, symbol_);
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(action_)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, action_);
     }
-    if (((bitField0_ & 0x00000008) != 0)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, action_);
+    if (((bitField0_ & 0x00000001) != 0)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, symbol_);
     }
-    if (((bitField0_ & 0x00000010) != 0)) {
+    if (((bitField0_ & 0x00000002) != 0)) {
       output.writeDouble(5, markPrice_);
     }
-    if (((bitField0_ & 0x00000020) != 0)) {
+    if (((bitField0_ & 0x00000004) != 0)) {
       output.writeDouble(6, bidPrice_);
     }
-    if (((bitField0_ & 0x00000040) != 0)) {
+    if (((bitField0_ & 0x00000008) != 0)) {
       output.writeDouble(7, midPrice_);
     }
-    if (((bitField0_ & 0x00000080) != 0)) {
+    if (((bitField0_ & 0x00000010) != 0)) {
       output.writeDouble(8, askPrice_);
     }
-    if (((bitField0_ & 0x00000100) != 0)) {
+    if (((bitField0_ & 0x00000020) != 0)) {
       output.writeDouble(9, volume_);
     }
-    if (((bitField0_ & 0x00000200) != 0)) {
+    if (((bitField0_ & 0x00000040) != 0)) {
       output.writeInt64(10, sourceTimestamp_);
     }
-    if (((bitField0_ & 0x00000400) != 0)) {
+    if (((bitField0_ & 0x00000080) != 0)) {
       output.writeInt64(11, arrivalTimestamp_);
     }
-    if (((bitField0_ & 0x00000800) != 0)) {
+    if (((bitField0_ & 0x00000100) != 0)) {
       output.writeInt64(12, publishTimestamp_);
     }
     unknownFields.writeTo(output);
@@ -569,47 +686,47 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (((bitField0_ & 0x00000001) != 0)) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(source_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, source_);
     }
-    if (((bitField0_ & 0x00000002) != 0)) {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(topic_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, topic_);
     }
-    if (((bitField0_ & 0x00000004) != 0)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, symbol_);
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(action_)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, action_);
     }
-    if (((bitField0_ & 0x00000008) != 0)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, action_);
+    if (((bitField0_ & 0x00000001) != 0)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, symbol_);
     }
-    if (((bitField0_ & 0x00000010) != 0)) {
+    if (((bitField0_ & 0x00000002) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeDoubleSize(5, markPrice_);
     }
-    if (((bitField0_ & 0x00000020) != 0)) {
+    if (((bitField0_ & 0x00000004) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeDoubleSize(6, bidPrice_);
     }
-    if (((bitField0_ & 0x00000040) != 0)) {
+    if (((bitField0_ & 0x00000008) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeDoubleSize(7, midPrice_);
     }
-    if (((bitField0_ & 0x00000080) != 0)) {
+    if (((bitField0_ & 0x00000010) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeDoubleSize(8, askPrice_);
     }
-    if (((bitField0_ & 0x00000100) != 0)) {
+    if (((bitField0_ & 0x00000020) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeDoubleSize(9, volume_);
     }
-    if (((bitField0_ & 0x00000200) != 0)) {
+    if (((bitField0_ & 0x00000040) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(10, sourceTimestamp_);
     }
-    if (((bitField0_ & 0x00000400) != 0)) {
+    if (((bitField0_ & 0x00000080) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(11, arrivalTimestamp_);
     }
-    if (((bitField0_ & 0x00000800) != 0)) {
+    if (((bitField0_ & 0x00000100) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(12, publishTimestamp_);
     }
@@ -621,80 +738,84 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public boolean equals(final java.lang.Object obj) {
     if (obj == this) {
-     return true;
+      return true;
     }
     if (!(obj instanceof org.broker.marketdata.protos.Quote)) {
       return super.equals(obj);
     }
     org.broker.marketdata.protos.Quote other = (org.broker.marketdata.protos.Quote) obj;
 
-    if (hasSource() != other.hasSource()) return false;
-    if (hasSource()) {
-      if (!getSource()
-          .equals(other.getSource())) return false;
-    }
-    if (hasTopic() != other.hasTopic()) return false;
-    if (hasTopic()) {
-      if (!getTopic()
-          .equals(other.getTopic())) return false;
-    }
+    if (!getSource()
+      .equals(other.getSource())) return false;
+    if (!getTopic()
+      .equals(other.getTopic())) return false;
+    if (!getAction()
+      .equals(other.getAction())) return false;
     if (hasSymbol() != other.hasSymbol()) return false;
     if (hasSymbol()) {
       if (!getSymbol()
-          .equals(other.getSymbol())) return false;
-    }
-    if (hasAction() != other.hasAction()) return false;
-    if (hasAction()) {
-      if (!getAction()
-          .equals(other.getAction())) return false;
+        .equals(other.getSymbol())) return false;
     }
     if (hasMarkPrice() != other.hasMarkPrice()) return false;
     if (hasMarkPrice()) {
       if (java.lang.Double.doubleToLongBits(getMarkPrice())
-          != java.lang.Double.doubleToLongBits(
-              other.getMarkPrice())) return false;
+        != java.lang.Double.doubleToLongBits(
+        other.getMarkPrice())) return false;
     }
     if (hasBidPrice() != other.hasBidPrice()) return false;
     if (hasBidPrice()) {
       if (java.lang.Double.doubleToLongBits(getBidPrice())
-          != java.lang.Double.doubleToLongBits(
-              other.getBidPrice())) return false;
+        != java.lang.Double.doubleToLongBits(
+        other.getBidPrice())) return false;
     }
     if (hasMidPrice() != other.hasMidPrice()) return false;
     if (hasMidPrice()) {
       if (java.lang.Double.doubleToLongBits(getMidPrice())
-          != java.lang.Double.doubleToLongBits(
-              other.getMidPrice())) return false;
+        != java.lang.Double.doubleToLongBits(
+        other.getMidPrice())) return false;
     }
     if (hasAskPrice() != other.hasAskPrice()) return false;
     if (hasAskPrice()) {
       if (java.lang.Double.doubleToLongBits(getAskPrice())
-          != java.lang.Double.doubleToLongBits(
-              other.getAskPrice())) return false;
+        != java.lang.Double.doubleToLongBits(
+        other.getAskPrice())) return false;
     }
     if (hasVolume() != other.hasVolume()) return false;
     if (hasVolume()) {
       if (java.lang.Double.doubleToLongBits(getVolume())
-          != java.lang.Double.doubleToLongBits(
-              other.getVolume())) return false;
+        != java.lang.Double.doubleToLongBits(
+        other.getVolume())) return false;
     }
     if (hasSourceTimestamp() != other.hasSourceTimestamp()) return false;
     if (hasSourceTimestamp()) {
       if (getSourceTimestamp()
-          != other.getSourceTimestamp()) return false;
+        != other.getSourceTimestamp()) return false;
     }
     if (hasArrivalTimestamp() != other.hasArrivalTimestamp()) return false;
     if (hasArrivalTimestamp()) {
       if (getArrivalTimestamp()
-          != other.getArrivalTimestamp()) return false;
+        != other.getArrivalTimestamp()) return false;
     }
     if (hasPublishTimestamp() != other.hasPublishTimestamp()) return false;
     if (hasPublishTimestamp()) {
       if (getPublishTimestamp()
-          != other.getPublishTimestamp()) return false;
+        != other.getPublishTimestamp()) return false;
     }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
+  }
+
+  @java.lang.Override
+  public Builder toBuilder() {
+    return this == DEFAULT_INSTANCE
+      ? new Builder() : new Builder().mergeFrom(this);
+  }
+
+  @java.lang.Override
+  protected Builder newBuilderForType(
+    com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+    Builder builder = new Builder(parent);
+    return builder;
   }
 
   @java.lang.Override
@@ -704,174 +825,78 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    if (hasSource()) {
-      hash = (37 * hash) + SOURCE_FIELD_NUMBER;
-      hash = (53 * hash) + getSource().hashCode();
-    }
-    if (hasTopic()) {
-      hash = (37 * hash) + TOPIC_FIELD_NUMBER;
-      hash = (53 * hash) + getTopic().hashCode();
-    }
+    hash = (37 * hash) + SOURCE_FIELD_NUMBER;
+    hash = (53 * hash) + getSource().hashCode();
+    hash = (37 * hash) + TOPIC_FIELD_NUMBER;
+    hash = (53 * hash) + getTopic().hashCode();
+    hash = (37 * hash) + ACTION_FIELD_NUMBER;
+    hash = (53 * hash) + getAction().hashCode();
     if (hasSymbol()) {
       hash = (37 * hash) + SYMBOL_FIELD_NUMBER;
       hash = (53 * hash) + getSymbol().hashCode();
     }
-    if (hasAction()) {
-      hash = (37 * hash) + ACTION_FIELD_NUMBER;
-      hash = (53 * hash) + getAction().hashCode();
-    }
     if (hasMarkPrice()) {
       hash = (37 * hash) + MARKPRICE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          java.lang.Double.doubleToLongBits(getMarkPrice()));
+        java.lang.Double.doubleToLongBits(getMarkPrice()));
     }
     if (hasBidPrice()) {
       hash = (37 * hash) + BIDPRICE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          java.lang.Double.doubleToLongBits(getBidPrice()));
+        java.lang.Double.doubleToLongBits(getBidPrice()));
     }
     if (hasMidPrice()) {
       hash = (37 * hash) + MIDPRICE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          java.lang.Double.doubleToLongBits(getMidPrice()));
+        java.lang.Double.doubleToLongBits(getMidPrice()));
     }
     if (hasAskPrice()) {
       hash = (37 * hash) + ASKPRICE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          java.lang.Double.doubleToLongBits(getAskPrice()));
+        java.lang.Double.doubleToLongBits(getAskPrice()));
     }
     if (hasVolume()) {
       hash = (37 * hash) + VOLUME_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          java.lang.Double.doubleToLongBits(getVolume()));
+        java.lang.Double.doubleToLongBits(getVolume()));
     }
     if (hasSourceTimestamp()) {
       hash = (37 * hash) + SOURCETIMESTAMP_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getSourceTimestamp());
+        getSourceTimestamp());
     }
     if (hasArrivalTimestamp()) {
       hash = (37 * hash) + ARRIVALTIMESTAMP_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getArrivalTimestamp());
+        getArrivalTimestamp());
     }
     if (hasPublishTimestamp()) {
       hash = (37 * hash) + PUBLISHTIMESTAMP_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getPublishTimestamp());
+        getPublishTimestamp());
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static org.broker.marketdata.protos.Quote parseFrom(
-      java.nio.ByteBuffer data)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data);
-  }
-  public static org.broker.marketdata.protos.Quote parseFrom(
-      java.nio.ByteBuffer data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data, extensionRegistry);
-  }
-  public static org.broker.marketdata.protos.Quote parseFrom(
-      com.google.protobuf.ByteString data)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data);
-  }
-  public static org.broker.marketdata.protos.Quote parseFrom(
-      com.google.protobuf.ByteString data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data, extensionRegistry);
-  }
-  public static org.broker.marketdata.protos.Quote parseFrom(byte[] data)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data);
-  }
-  public static org.broker.marketdata.protos.Quote parseFrom(
-      byte[] data,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data, extensionRegistry);
-  }
-  public static org.broker.marketdata.protos.Quote parseFrom(java.io.InputStream input)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input);
-  }
-  public static org.broker.marketdata.protos.Quote parseFrom(
-      java.io.InputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input, extensionRegistry);
-  }
-  public static org.broker.marketdata.protos.Quote parseDelimitedFrom(java.io.InputStream input)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseDelimitedWithIOException(PARSER, input);
-  }
-  public static org.broker.marketdata.protos.Quote parseDelimitedFrom(
-      java.io.InputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-  }
-  public static org.broker.marketdata.protos.Quote parseFrom(
-      com.google.protobuf.CodedInputStream input)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input);
-  }
-  public static org.broker.marketdata.protos.Quote parseFrom(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input, extensionRegistry);
-  }
-
-  @java.lang.Override
-  public Builder newBuilderForType() { return newBuilder(); }
-  public static Builder newBuilder() {
-    return DEFAULT_INSTANCE.toBuilder();
-  }
-  public static Builder newBuilder(org.broker.marketdata.protos.Quote prototype) {
-    return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-  }
-  @java.lang.Override
-  public Builder toBuilder() {
-    return this == DEFAULT_INSTANCE
-        ? new Builder() : new Builder().mergeFrom(this);
-  }
-
-  @java.lang.Override
-  protected Builder newBuilderForType(
-      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-    Builder builder = new Builder(parent);
-    return builder;
-  }
   /**
    * Protobuf type {@code marketdata.Quote}
    */
   public static final class Builder extends
-      com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:marketdata.Quote)
-      org.broker.marketdata.protos.QuoteOrBuilder {
+    com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+    // @@protoc_insertion_point(builder_implements:marketdata.Quote)
+    org.broker.marketdata.protos.QuoteOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
+    getDescriptor() {
       return org.broker.marketdata.protos.InternalQuote.internal_static_marketdata_Quote_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
+    internalGetFieldAccessorTable() {
       return org.broker.marketdata.protos.InternalQuote.internal_static_marketdata_Quote_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
+        .ensureFieldAccessorsInitialized(
               org.broker.marketdata.protos.Quote.class, org.broker.marketdata.protos.Quote.Builder.class);
     }
 
@@ -890,35 +915,8 @@ private static final long serialVersionUID = 0L;
               .alwaysUseFieldBuilders) {
       }
     }
-    @java.lang.Override
-    public Builder clear() {
-      super.clear();
-      source_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
-      topic_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
-      symbol_ = "";
-      bitField0_ = (bitField0_ & ~0x00000004);
-      action_ = "";
-      bitField0_ = (bitField0_ & ~0x00000008);
-      markPrice_ = 0D;
-      bitField0_ = (bitField0_ & ~0x00000010);
-      bidPrice_ = 0D;
-      bitField0_ = (bitField0_ & ~0x00000020);
-      midPrice_ = 0D;
-      bitField0_ = (bitField0_ & ~0x00000040);
-      askPrice_ = 0D;
-      bitField0_ = (bitField0_ & ~0x00000080);
-      volume_ = 0D;
-      bitField0_ = (bitField0_ & ~0x00000100);
-      sourceTimestamp_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000200);
-      arrivalTimestamp_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000400);
-      publishTimestamp_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000800);
-      return this;
-    }
+
+    private java.lang.Object action_ = "";
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
@@ -940,63 +938,7 @@ private static final long serialVersionUID = 0L;
       return result;
     }
 
-    @java.lang.Override
-    public org.broker.marketdata.protos.Quote buildPartial() {
-      org.broker.marketdata.protos.Quote result = new org.broker.marketdata.protos.Quote(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.source_ = source_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.topic_ = topic_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.symbol_ = symbol_;
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        to_bitField0_ |= 0x00000008;
-      }
-      result.action_ = action_;
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        result.markPrice_ = markPrice_;
-        to_bitField0_ |= 0x00000010;
-      }
-      if (((from_bitField0_ & 0x00000020) != 0)) {
-        result.bidPrice_ = bidPrice_;
-        to_bitField0_ |= 0x00000020;
-      }
-      if (((from_bitField0_ & 0x00000040) != 0)) {
-        result.midPrice_ = midPrice_;
-        to_bitField0_ |= 0x00000040;
-      }
-      if (((from_bitField0_ & 0x00000080) != 0)) {
-        result.askPrice_ = askPrice_;
-        to_bitField0_ |= 0x00000080;
-      }
-      if (((from_bitField0_ & 0x00000100) != 0)) {
-        result.volume_ = volume_;
-        to_bitField0_ |= 0x00000100;
-      }
-      if (((from_bitField0_ & 0x00000200) != 0)) {
-        result.sourceTimestamp_ = sourceTimestamp_;
-        to_bitField0_ |= 0x00000200;
-      }
-      if (((from_bitField0_ & 0x00000400) != 0)) {
-        result.arrivalTimestamp_ = arrivalTimestamp_;
-        to_bitField0_ |= 0x00000400;
-      }
-      if (((from_bitField0_ & 0x00000800) != 0)) {
-        result.publishTimestamp_ = publishTimestamp_;
-        to_bitField0_ |= 0x00000800;
-      }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
-    }
+    private java.lang.Object symbol_ = "";
 
     @java.lang.Override
     public Builder clone() {
@@ -1020,46 +962,160 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
+      com.google.protobuf.Descriptors.FieldDescriptor field,
+      int index, java.lang.Object value) {
       return super.setRepeatedField(field, index, value);
     }
+
     @java.lang.Override
     public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
+      com.google.protobuf.Descriptors.FieldDescriptor field,
+      java.lang.Object value) {
       return super.addRepeatedField(field, value);
     }
+
+    private int bitField0_;
+    private java.lang.Object source_ = "";
+    private java.lang.Object topic_ = "";
+    private double markPrice_;
+    private double bidPrice_;
+    private double midPrice_;
+    private double askPrice_;
+    private double volume_;
+    private long sourceTimestamp_;
+    private long arrivalTimestamp_;
+    private long publishTimestamp_;
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof org.broker.marketdata.protos.Quote) {
-        return mergeFrom((org.broker.marketdata.protos.Quote)other);
+        return mergeFrom((org.broker.marketdata.protos.Quote) other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
+    @java.lang.Override
+    public Builder clear() {
+      super.clear();
+      source_ = "";
+
+      topic_ = "";
+
+      action_ = "";
+
+      symbol_ = "";
+      bitField0_ = (bitField0_ & ~0x00000001);
+      markPrice_ = 0D;
+      bitField0_ = (bitField0_ & ~0x00000002);
+      bidPrice_ = 0D;
+      bitField0_ = (bitField0_ & ~0x00000004);
+      midPrice_ = 0D;
+      bitField0_ = (bitField0_ & ~0x00000008);
+      askPrice_ = 0D;
+      bitField0_ = (bitField0_ & ~0x00000010);
+      volume_ = 0D;
+      bitField0_ = (bitField0_ & ~0x00000020);
+      sourceTimestamp_ = 0L;
+      bitField0_ = (bitField0_ & ~0x00000040);
+      arrivalTimestamp_ = 0L;
+      bitField0_ = (bitField0_ & ~0x00000080);
+      publishTimestamp_ = 0L;
+      bitField0_ = (bitField0_ & ~0x00000100);
+      return this;
+    }
+
+    @java.lang.Override
+    public final boolean isInitialized() {
+      return true;
+    }
+
+    @java.lang.Override
+    public Builder mergeFrom(
+      com.google.protobuf.CodedInputStream input,
+      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+      throws java.io.IOException {
+      org.broker.marketdata.protos.Quote parsedMessage = null;
+      try {
+        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        parsedMessage = (org.broker.marketdata.protos.Quote) e.getUnfinishedMessage();
+        throw e.unwrapIOException();
+      } finally {
+        if (parsedMessage != null) {
+          mergeFrom(parsedMessage);
+        }
+      }
+      return this;
+    }
+
+    @java.lang.Override
+    public org.broker.marketdata.protos.Quote buildPartial() {
+      org.broker.marketdata.protos.Quote result = new org.broker.marketdata.protos.Quote(this);
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      result.source_ = source_;
+      result.topic_ = topic_;
+      result.action_ = action_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        to_bitField0_ |= 0x00000001;
+      }
+      result.symbol_ = symbol_;
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.markPrice_ = markPrice_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.bidPrice_ = bidPrice_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.midPrice_ = midPrice_;
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.askPrice_ = askPrice_;
+        to_bitField0_ |= 0x00000010;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.volume_ = volume_;
+        to_bitField0_ |= 0x00000020;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.sourceTimestamp_ = sourceTimestamp_;
+        to_bitField0_ |= 0x00000040;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.arrivalTimestamp_ = arrivalTimestamp_;
+        to_bitField0_ |= 0x00000080;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.publishTimestamp_ = publishTimestamp_;
+        to_bitField0_ |= 0x00000100;
+      }
+      result.bitField0_ = to_bitField0_;
+      onBuilt();
+      return result;
+    }
+
     public Builder mergeFrom(org.broker.marketdata.protos.Quote other) {
       if (other == org.broker.marketdata.protos.Quote.getDefaultInstance()) return this;
-      if (other.hasSource()) {
-        bitField0_ |= 0x00000001;
+      if (!other.getSource().isEmpty()) {
         source_ = other.source_;
         onChanged();
       }
-      if (other.hasTopic()) {
-        bitField0_ |= 0x00000002;
+      if (!other.getTopic().isEmpty()) {
         topic_ = other.topic_;
         onChanged();
       }
-      if (other.hasSymbol()) {
-        bitField0_ |= 0x00000004;
-        symbol_ = other.symbol_;
+      if (!other.getAction().isEmpty()) {
+        action_ = other.action_;
         onChanged();
       }
-      if (other.hasAction()) {
-        bitField0_ |= 0x00000008;
-        action_ = other.action_;
+      if (other.hasSymbol()) {
+        bitField0_ |= 0x00000001;
+        symbol_ = other.symbol_;
         onChanged();
       }
       if (other.hasMarkPrice()) {
@@ -1091,660 +1147,656 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    @java.lang.Override
-    public final boolean isInitialized() {
-      if (!hasSource()) {
-        return false;
-      }
-      if (!hasTopic()) {
-        return false;
-      }
-      if (!hasSymbol()) {
-        return false;
-      }
-      if (!hasAction()) {
-        return false;
-      }
-      return true;
-    }
-
-    @java.lang.Override
-    public Builder mergeFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      org.broker.marketdata.protos.Quote parsedMessage = null;
-      try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (org.broker.marketdata.protos.Quote) e.getUnfinishedMessage();
-        throw e.unwrapIOException();
-      } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
-      return this;
-    }
-    private int bitField0_;
-
-    private java.lang.Object source_ = "";
     /**
-     * <code>required string source = 1;</code>
-     * @return Whether the source field is set.
-     */
-    public boolean hasSource() {
-      return ((bitField0_ & 0x00000001) != 0);
-    }
-    /**
-     * <code>required string source = 1;</code>
+     * <code>string source = 1;</code>
      * @return The source.
      */
     public java.lang.String getSource() {
       java.lang.Object ref = source_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
+          (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          source_ = s;
-        }
+        source_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
+
     /**
-     * <code>required string source = 1;</code>
+     * <code>string source = 1;</code>
+     *
+     * @param value The source to set.
+     * @return This builder for chaining.
+     */
+    public Builder setSource(
+      java.lang.String value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+
+      source_ = value;
+      onChanged();
+      return this;
+    }
+
+    /**
+     * <code>string source = 1;</code>
+     *
      * @return The bytes for source.
      */
     public com.google.protobuf.ByteString
-        getSourceBytes() {
+    getSourceBytes() {
       java.lang.Object ref = source_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+          com.google.protobuf.ByteString.copyFromUtf8(
+            (java.lang.String) ref);
         source_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
+
     /**
-     * <code>required string source = 1;</code>
-     * @param value The source to set.
-     * @return This builder for chaining.
-     */
-    public Builder setSource(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-      source_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>required string source = 1;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearSource() {
-      bitField0_ = (bitField0_ & ~0x00000001);
-      source_ = getDefaultInstance().getSource();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>required string source = 1;</code>
+     * <code>string source = 1;</code>
+     *
      * @param value The bytes for source to set.
      * @return This builder for chaining.
      */
     public Builder setSourceBytes(
-        com.google.protobuf.ByteString value) {
+      com.google.protobuf.ByteString value) {
       if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        throw new NullPointerException();
+      }
+      checkByteStringIsUtf8(value);
+
       source_ = value;
       onChanged();
       return this;
     }
 
-    private java.lang.Object topic_ = "";
     /**
-     * <code>required string topic = 2;</code>
-     * @return Whether the topic field is set.
+     * <code>string source = 1;</code>
+     * @return This builder for chaining.
      */
-    public boolean hasTopic() {
-      return ((bitField0_ & 0x00000002) != 0);
+    public Builder clearSource() {
+
+      source_ = getDefaultInstance().getSource();
+      onChanged();
+      return this;
     }
+
     /**
-     * <code>required string topic = 2;</code>
+     * <code>string topic = 2;</code>
      * @return The topic.
      */
     public java.lang.String getTopic() {
       java.lang.Object ref = topic_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
+          (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          topic_ = s;
-        }
+        topic_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
+
     /**
-     * <code>required string topic = 2;</code>
+     * <code>string topic = 2;</code>
+     *
+     * @param value The topic to set.
+     * @return This builder for chaining.
+     */
+    public Builder setTopic(
+      java.lang.String value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+
+      topic_ = value;
+      onChanged();
+      return this;
+    }
+
+    /**
+     * <code>string topic = 2;</code>
+     *
      * @return The bytes for topic.
      */
     public com.google.protobuf.ByteString
-        getTopicBytes() {
+    getTopicBytes() {
       java.lang.Object ref = topic_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+          com.google.protobuf.ByteString.copyFromUtf8(
+            (java.lang.String) ref);
         topic_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
+
     /**
-     * <code>required string topic = 2;</code>
-     * @param value The topic to set.
-     * @return This builder for chaining.
-     */
-    public Builder setTopic(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-      topic_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>required string topic = 2;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearTopic() {
-      bitField0_ = (bitField0_ & ~0x00000002);
-      topic_ = getDefaultInstance().getTopic();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>required string topic = 2;</code>
+     * <code>string topic = 2;</code>
+     *
      * @param value The bytes for topic to set.
      * @return This builder for chaining.
      */
     public Builder setTopicBytes(
-        com.google.protobuf.ByteString value) {
+      com.google.protobuf.ByteString value) {
       if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        throw new NullPointerException();
+      }
+      checkByteStringIsUtf8(value);
+
       topic_ = value;
       onChanged();
       return this;
     }
 
-    private java.lang.Object symbol_ = "";
     /**
-     * <code>required string symbol = 3;</code>
-     * @return Whether the symbol field is set.
-     */
-    public boolean hasSymbol() {
-      return ((bitField0_ & 0x00000004) != 0);
-    }
-    /**
-     * <code>required string symbol = 3;</code>
-     * @return The symbol.
-     */
-    public java.lang.String getSymbol() {
-      java.lang.Object ref = symbol_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          symbol_ = s;
-        }
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>required string symbol = 3;</code>
-     * @return The bytes for symbol.
-     */
-    public com.google.protobuf.ByteString
-        getSymbolBytes() {
-      java.lang.Object ref = symbol_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        symbol_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>required string symbol = 3;</code>
-     * @param value The symbol to set.
+     * <code>string topic = 2;</code>
      * @return This builder for chaining.
      */
-    public Builder setSymbol(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-      symbol_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>required string symbol = 3;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearSymbol() {
-      bitField0_ = (bitField0_ & ~0x00000004);
-      symbol_ = getDefaultInstance().getSymbol();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>required string symbol = 3;</code>
-     * @param value The bytes for symbol to set.
-     * @return This builder for chaining.
-     */
-    public Builder setSymbolBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-      symbol_ = value;
+    public Builder clearTopic() {
+
+      topic_ = getDefaultInstance().getTopic();
       onChanged();
       return this;
     }
 
-    private java.lang.Object action_ = "";
     /**
-     * <code>required string action = 4;</code>
-     * @return Whether the action field is set.
-     */
-    public boolean hasAction() {
-      return ((bitField0_ & 0x00000008) != 0);
-    }
-    /**
-     * <code>required string action = 4;</code>
+     * <code>string action = 3;</code>
+     *
      * @return The action.
      */
     public java.lang.String getAction() {
       java.lang.Object ref = action_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
+          (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          action_ = s;
-        }
+        action_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
+
     /**
-     * <code>required string action = 4;</code>
+     * <code>string action = 3;</code>
+     *
+     * @param value The action to set.
+     * @return This builder for chaining.
+     */
+    public Builder setAction(
+      java.lang.String value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+
+      action_ = value;
+      onChanged();
+      return this;
+    }
+
+    /**
+     * <code>string action = 3;</code>
+     *
      * @return The bytes for action.
      */
     public com.google.protobuf.ByteString
-        getActionBytes() {
+    getActionBytes() {
       java.lang.Object ref = action_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
+        com.google.protobuf.ByteString b =
+          com.google.protobuf.ByteString.copyFromUtf8(
+            (java.lang.String) ref);
         action_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
+
     /**
-     * <code>required string action = 4;</code>
-     * @param value The action to set.
-     * @return This builder for chaining.
-     */
-    public Builder setAction(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-      action_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>required string action = 4;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearAction() {
-      bitField0_ = (bitField0_ & ~0x00000008);
-      action_ = getDefaultInstance().getAction();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>required string action = 4;</code>
+     * <code>string action = 3;</code>
+     *
      * @param value The bytes for action to set.
      * @return This builder for chaining.
      */
     public Builder setActionBytes(
-        com.google.protobuf.ByteString value) {
+      com.google.protobuf.ByteString value) {
       if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+        throw new NullPointerException();
+      }
+      checkByteStringIsUtf8(value);
+
       action_ = value;
       onChanged();
       return this;
     }
 
-    private double markPrice_ ;
     /**
-     * <code>optional double markPrice = 5;</code>
-     * @return Whether the markPrice field is set.
+     * <code>string action = 3;</code>
+     *
+     * @return This builder for chaining.
      */
-    @java.lang.Override
-    public boolean hasMarkPrice() {
-      return ((bitField0_ & 0x00000010) != 0);
+    public Builder clearAction() {
+
+      action_ = getDefaultInstance().getAction();
+      onChanged();
+      return this;
     }
+
     /**
      * <code>optional double markPrice = 5;</code>
+     *
      * @return The markPrice.
      */
     @java.lang.Override
     public double getMarkPrice() {
       return markPrice_;
     }
+
     /**
-     * <code>optional double markPrice = 5;</code>
-     * @param value The markPrice to set.
-     * @return This builder for chaining.
+     * <code>optional string symbol = 4;</code>
+     *
+     * @return Whether the symbol field is set.
      */
-    public Builder setMarkPrice(double value) {
-      bitField0_ |= 0x00000010;
-      markPrice_ = value;
-      onChanged();
-      return this;
+    public boolean hasSymbol() {
+      return ((bitField0_ & 0x00000001) != 0);
     }
+
     /**
-     * <code>optional double markPrice = 5;</code>
+     * <code>optional string symbol = 4;</code>
+     *
+     * @return The symbol.
+     */
+    public java.lang.String getSymbol() {
+      java.lang.Object ref = symbol_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+          (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        symbol_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+
+    /**
+     * <code>optional string symbol = 4;</code>
+     *
+     * @param value The symbol to set.
      * @return This builder for chaining.
      */
-    public Builder clearMarkPrice() {
-      bitField0_ = (bitField0_ & ~0x00000010);
-      markPrice_ = 0D;
+    public Builder setSymbol(
+      java.lang.String value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000001;
+      symbol_ = value;
       onChanged();
       return this;
     }
 
-    private double bidPrice_ ;
     /**
-     * <code>optional double bidPrice = 6;</code>
-     * @return Whether the bidPrice field is set.
+     * <code>optional string symbol = 4;</code>
+     *
+     * @return The bytes for symbol.
      */
-    @java.lang.Override
-    public boolean hasBidPrice() {
-      return ((bitField0_ & 0x00000020) != 0);
+    public com.google.protobuf.ByteString
+    getSymbolBytes() {
+      java.lang.Object ref = symbol_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b =
+          com.google.protobuf.ByteString.copyFromUtf8(
+            (java.lang.String) ref);
+        symbol_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
+
     /**
      * <code>optional double bidPrice = 6;</code>
+     *
      * @return The bidPrice.
      */
     @java.lang.Override
     public double getBidPrice() {
       return bidPrice_;
     }
+
     /**
-     * <code>optional double bidPrice = 6;</code>
-     * @param value The bidPrice to set.
+     * <code>optional string symbol = 4;</code>
+     *
+     * @param value The bytes for symbol to set.
      * @return This builder for chaining.
      */
-    public Builder setBidPrice(double value) {
-      bitField0_ |= 0x00000020;
-      bidPrice_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>optional double bidPrice = 6;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearBidPrice() {
-      bitField0_ = (bitField0_ & ~0x00000020);
-      bidPrice_ = 0D;
+    public Builder setSymbolBytes(
+      com.google.protobuf.ByteString value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      checkByteStringIsUtf8(value);
+      bitField0_ |= 0x00000001;
+      symbol_ = value;
       onChanged();
       return this;
     }
 
-    private double midPrice_ ;
     /**
-     * <code>optional double midPrice = 7;</code>
-     * @return Whether the midPrice field is set.
+     * <code>optional string symbol = 4;</code>
+     *
+     * @return This builder for chaining.
+     */
+    public Builder clearSymbol() {
+      bitField0_ = (bitField0_ & ~0x00000001);
+      symbol_ = getDefaultInstance().getSymbol();
+      onChanged();
+      return this;
+    }
+
+    /**
+     * <code>optional double markPrice = 5;</code>
+     * @return Whether the markPrice field is set.
      */
     @java.lang.Override
-    public boolean hasMidPrice() {
-      return ((bitField0_ & 0x00000040) != 0);
+    public boolean hasMarkPrice() {
+      return ((bitField0_ & 0x00000002) != 0);
     }
+
+    /**
+     * <code>optional double markPrice = 5;</code>
+     *
+     * @param value The markPrice to set.
+     * @return This builder for chaining.
+     */
+    public Builder setMarkPrice(double value) {
+      bitField0_ |= 0x00000002;
+      markPrice_ = value;
+      onChanged();
+      return this;
+    }
+
     /**
      * <code>optional double midPrice = 7;</code>
+     *
      * @return The midPrice.
      */
     @java.lang.Override
     public double getMidPrice() {
       return midPrice_;
     }
+
     /**
-     * <code>optional double midPrice = 7;</code>
-     * @param value The midPrice to set.
+     * <code>optional double markPrice = 5;</code>
+     *
      * @return This builder for chaining.
      */
-    public Builder setMidPrice(double value) {
-      bitField0_ |= 0x00000040;
-      midPrice_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>optional double midPrice = 7;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearMidPrice() {
-      bitField0_ = (bitField0_ & ~0x00000040);
-      midPrice_ = 0D;
+    public Builder clearMarkPrice() {
+      bitField0_ = (bitField0_ & ~0x00000002);
+      markPrice_ = 0D;
       onChanged();
       return this;
     }
 
-    private double askPrice_ ;
     /**
-     * <code>optional double askPrice = 8;</code>
-     * @return Whether the askPrice field is set.
+     * <code>optional double bidPrice = 6;</code>
+     * @return Whether the bidPrice field is set.
      */
     @java.lang.Override
-    public boolean hasAskPrice() {
-      return ((bitField0_ & 0x00000080) != 0);
+    public boolean hasBidPrice() {
+      return ((bitField0_ & 0x00000004) != 0);
     }
+
+    /**
+     * <code>optional double bidPrice = 6;</code>
+     * @param value The bidPrice to set.
+     * @return This builder for chaining.
+     */
+    public Builder setBidPrice(double value) {
+      bitField0_ |= 0x00000004;
+      bidPrice_ = value;
+      onChanged();
+      return this;
+    }
+
+    /**
+     * <code>optional double bidPrice = 6;</code>
+     *
+     * @return This builder for chaining.
+     */
+    public Builder clearBidPrice() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      bidPrice_ = 0D;
+      onChanged();
+      return this;
+    }
+
     /**
      * <code>optional double askPrice = 8;</code>
+     *
      * @return The askPrice.
      */
     @java.lang.Override
     public double getAskPrice() {
       return askPrice_;
     }
+
     /**
-     * <code>optional double askPrice = 8;</code>
-     * @param value The askPrice to set.
-     * @return This builder for chaining.
+     * <code>optional double midPrice = 7;</code>
+     *
+     * @return Whether the midPrice field is set.
      */
-    public Builder setAskPrice(double value) {
-      bitField0_ |= 0x00000080;
-      askPrice_ = value;
-      onChanged();
-      return this;
+    @java.lang.Override
+    public boolean hasMidPrice() {
+      return ((bitField0_ & 0x00000008) != 0);
     }
+
     /**
-     * <code>optional double askPrice = 8;</code>
+     * <code>optional double midPrice = 7;</code>
+     * @param value The midPrice to set.
      * @return This builder for chaining.
      */
-    public Builder clearAskPrice() {
-      bitField0_ = (bitField0_ & ~0x00000080);
-      askPrice_ = 0D;
+    public Builder setMidPrice(double value) {
+      bitField0_ |= 0x00000008;
+      midPrice_ = value;
       onChanged();
       return this;
     }
 
-    private double volume_ ;
     /**
-     * <code>optional double volume = 9;</code>
-     * @return Whether the volume field is set.
+     * <code>optional double midPrice = 7;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearMidPrice() {
+      bitField0_ = (bitField0_ & ~0x00000008);
+      midPrice_ = 0D;
+      onChanged();
+      return this;
+    }
+
+    /**
+     * <code>optional double askPrice = 8;</code>
+     * @return Whether the askPrice field is set.
      */
     @java.lang.Override
-    public boolean hasVolume() {
-      return ((bitField0_ & 0x00000100) != 0);
+    public boolean hasAskPrice() {
+      return ((bitField0_ & 0x00000010) != 0);
     }
+
     /**
      * <code>optional double volume = 9;</code>
+     *
      * @return The volume.
      */
     @java.lang.Override
     public double getVolume() {
       return volume_;
     }
+
     /**
-     * <code>optional double volume = 9;</code>
-     * @param value The volume to set.
+     * <code>optional double askPrice = 8;</code>
+     * @param value The askPrice to set.
      * @return This builder for chaining.
      */
-    public Builder setVolume(double value) {
-      bitField0_ |= 0x00000100;
-      volume_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>optional double volume = 9;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearVolume() {
-      bitField0_ = (bitField0_ & ~0x00000100);
-      volume_ = 0D;
+    public Builder setAskPrice(double value) {
+      bitField0_ |= 0x00000010;
+      askPrice_ = value;
       onChanged();
       return this;
     }
 
-    private long sourceTimestamp_ ;
     /**
-     * <code>optional int64 sourceTimestamp = 10;</code>
-     * @return Whether the sourceTimestamp field is set.
+     * <code>optional double askPrice = 8;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearAskPrice() {
+      bitField0_ = (bitField0_ & ~0x00000010);
+      askPrice_ = 0D;
+      onChanged();
+      return this;
+    }
+
+    /**
+     * <code>optional double volume = 9;</code>
+     * @return Whether the volume field is set.
      */
     @java.lang.Override
-    public boolean hasSourceTimestamp() {
-      return ((bitField0_ & 0x00000200) != 0);
+    public boolean hasVolume() {
+      return ((bitField0_ & 0x00000020) != 0);
     }
+
+    /**
+     * <code>optional double volume = 9;</code>
+     *
+     * @param value The volume to set.
+     * @return This builder for chaining.
+     */
+    public Builder setVolume(double value) {
+      bitField0_ |= 0x00000020;
+      volume_ = value;
+      onChanged();
+      return this;
+    }
+
     /**
      * <code>optional int64 sourceTimestamp = 10;</code>
+     *
      * @return The sourceTimestamp.
      */
     @java.lang.Override
     public long getSourceTimestamp() {
       return sourceTimestamp_;
     }
+
+    /**
+     * <code>optional double volume = 9;</code>
+     *
+     * @return This builder for chaining.
+     */
+    public Builder clearVolume() {
+      bitField0_ = (bitField0_ & ~0x00000020);
+      volume_ = 0D;
+      onChanged();
+      return this;
+    }
+
+    /**
+     * <code>optional int64 sourceTimestamp = 10;</code>
+     * @return Whether the sourceTimestamp field is set.
+     */
+    @java.lang.Override
+    public boolean hasSourceTimestamp() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+
     /**
      * <code>optional int64 sourceTimestamp = 10;</code>
      * @param value The sourceTimestamp to set.
      * @return This builder for chaining.
      */
     public Builder setSourceTimestamp(long value) {
-      bitField0_ |= 0x00000200;
+      bitField0_ |= 0x00000040;
       sourceTimestamp_ = value;
       onChanged();
       return this;
     }
+
     /**
      * <code>optional int64 sourceTimestamp = 10;</code>
      * @return This builder for chaining.
      */
     public Builder clearSourceTimestamp() {
-      bitField0_ = (bitField0_ & ~0x00000200);
+      bitField0_ = (bitField0_ & ~0x00000040);
       sourceTimestamp_ = 0L;
       onChanged();
       return this;
     }
 
-    private long arrivalTimestamp_ ;
     /**
      * <code>optional int64 arrivalTimestamp = 11;</code>
-     * @return Whether the arrivalTimestamp field is set.
-     */
-    @java.lang.Override
-    public boolean hasArrivalTimestamp() {
-      return ((bitField0_ & 0x00000400) != 0);
-    }
-    /**
-     * <code>optional int64 arrivalTimestamp = 11;</code>
+     *
      * @return The arrivalTimestamp.
      */
     @java.lang.Override
     public long getArrivalTimestamp() {
       return arrivalTimestamp_;
     }
+
     /**
      * <code>optional int64 arrivalTimestamp = 11;</code>
+     *
+     * @return Whether the arrivalTimestamp field is set.
+     */
+    @java.lang.Override
+    public boolean hasArrivalTimestamp() {
+      return ((bitField0_ & 0x00000080) != 0);
+    }
+
+    /**
+     * <code>optional int64 arrivalTimestamp = 11;</code>
+     *
      * @param value The arrivalTimestamp to set.
      * @return This builder for chaining.
      */
     public Builder setArrivalTimestamp(long value) {
-      bitField0_ |= 0x00000400;
+      bitField0_ |= 0x00000080;
       arrivalTimestamp_ = value;
       onChanged();
       return this;
     }
+
     /**
      * <code>optional int64 arrivalTimestamp = 11;</code>
      * @return This builder for chaining.
      */
     public Builder clearArrivalTimestamp() {
-      bitField0_ = (bitField0_ & ~0x00000400);
+      bitField0_ = (bitField0_ & ~0x00000080);
       arrivalTimestamp_ = 0L;
       onChanged();
       return this;
     }
 
-    private long publishTimestamp_ ;
     /**
      * <code>optional int64 publishTimestamp = 12;</code>
      * @return Whether the publishTimestamp field is set.
      */
     @java.lang.Override
     public boolean hasPublishTimestamp() {
-      return ((bitField0_ & 0x00000800) != 0);
+      return ((bitField0_ & 0x00000100) != 0);
     }
     /**
      * <code>optional int64 publishTimestamp = 12;</code>
@@ -1760,17 +1812,18 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setPublishTimestamp(long value) {
-      bitField0_ |= 0x00000800;
+      bitField0_ |= 0x00000100;
       publishTimestamp_ = value;
       onChanged();
       return this;
     }
+
     /**
      * <code>optional int64 publishTimestamp = 12;</code>
      * @return This builder for chaining.
      */
     public Builder clearPublishTimestamp() {
-      bitField0_ = (bitField0_ & ~0x00000800);
+      bitField0_ = (bitField0_ & ~0x00000100);
       publishTimestamp_ = 0L;
       onChanged();
       return this;
@@ -1790,27 +1843,6 @@ private static final long serialVersionUID = 0L;
 
     // @@protoc_insertion_point(builder_scope:marketdata.Quote)
   }
-
-  // @@protoc_insertion_point(class_scope:marketdata.Quote)
-  private static final org.broker.marketdata.protos.Quote DEFAULT_INSTANCE;
-  static {
-    DEFAULT_INSTANCE = new org.broker.marketdata.protos.Quote();
-  }
-
-  public static org.broker.marketdata.protos.Quote getDefaultInstance() {
-    return DEFAULT_INSTANCE;
-  }
-
-  @java.lang.Deprecated public static final com.google.protobuf.Parser<Quote>
-      PARSER = new com.google.protobuf.AbstractParser<Quote>() {
-    @java.lang.Override
-    public Quote parsePartialFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return new Quote(input, extensionRegistry);
-    }
-  };
 
   public static com.google.protobuf.Parser<Quote> parser() {
     return PARSER;

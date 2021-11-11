@@ -2,14 +2,8 @@ package org.broker.marketdata.exchange.bitmex;
 
 import io.vertx.core.buffer.Buffer;
 import io.vertx.sqlclient.Tuple;
-import org.broker.marketdata.client.WebSocketClientVerticle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class BitmexHandler implements ExchangeHandler {
 
@@ -25,24 +19,13 @@ public class BitmexHandler implements ExchangeHandler {
   public static final Tuple JSON_SYMBOL = Tuple.of("symbol", "$.symbol");
   public static final Tuple JSON_TABLE = Tuple.of("table", "$.table");
   public static final Tuple JSON_ACTION = Tuple.of("action", "$.action");
-
-  public static final List<Tuple> DATA_FIELDS = Arrays.asList(JSON_SYMBOL
-      , JSON_MARK_PRICE
-      , JSON_BID_PRICE
-      , JSON_MID_PRICE
-      , JSON_ASK_PRICE
-      , JSON_VOLUME)
-    .stream()
-    .collect(Collectors.toUnmodifiableList());
+  public static final Tuple JSON_TIMESTAMP = Tuple.of("timestamp", "$.timestamp");
 
   @Override
   public boolean isConnected(final Buffer buffer) {
     final var json = buffer.toJsonObject();
-    logger.info("BitMEX Connection Initial Response: {}",buffer.toString());
+    logger.info("BitMEX Connection Initial Response: {}", buffer);
     try {
-      //Optional.of(json.getString("info"));
-      //Optional.of(json.getString("version"));
-      //Optional.of(json.getString("timestamp"));
       logger.info("BitMEX Websocket Connected!");
       return true;
     } catch (Exception e) {

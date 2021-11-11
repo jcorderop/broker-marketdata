@@ -24,7 +24,4 @@ public class DBPools {
 
     return PgPool.pool(vertx, connectOptions, poolOptions);
   }
-
-
-
 }

@@ -7,46 +7,53 @@ import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.WebSocket;
 import io.vertx.core.http.WebSocketConnectOptions;
 import io.vertx.core.json.JsonObject;
-import org.broker.marketdata.bus.LocalMessageCodec;
 import org.broker.marketdata.common.VerticleCommon;
-import org.broker.marketdata.configuration.ConfigurationLoader;
 import org.broker.marketdata.configuration.ClientConfiguration;
+import org.broker.marketdata.configuration.ConfigurationFiles;
+import org.broker.marketdata.configuration.ConfigurationLoader;
 import org.broker.marketdata.configuration.Topics;
 import org.broker.marketdata.exchange.bitmex.ExchangeHandler;
-import org.broker.marketdata.protos.Quote;
 import org.broker.marketdata.protos.normalizer.QuoteNormalizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.function.Function;
 
+import static org.broker.marketdata.configuration.ConfigurationLoader.getConfigurationThrowableHandler;
+
 public class WebSocketClientVerticle extends AbstractVerticle implements VerticleCommon {
 
   private static final Logger logger = LoggerFactory.getLogger(WebSocketClientVerticle.class);
 
   private final ExchangeHandler exchangeHandler;
+  private final ConfigurationFiles configurationFiles;
 
-  public WebSocketClientVerticle(ExchangeHandler exchangeHandler) {
+  public WebSocketClientVerticle(ExchangeHandler exchangeHandler
+    , ConfigurationFiles configurationFiles) {
     this.exchangeHandler = exchangeHandler;
+    this.configurationFiles = configurationFiles;
+  }
+
+  private static HttpClientOptions getHttpClientOptions(ClientConfiguration config) {
+    return new HttpClientOptions()
+      .setMaxWebSocketFrameSize(config.getMaxWebSocketFrameSize())
+      .setMaxWebSocketMessageSize(config.getMaxWebSocketMessageSize());
   }
 
   @Override
   public void start(Promise<Void> startPromise) throws Exception {
     deforeStartVerticle(logger, this.getClass().getName());
-    ConfigurationLoader.loadExchangeConfiguration(vertx)
-      .onFailure(startPromise::fail)
-      .onSuccess(config -> logger.info("Configuration successful loaded..."))
+    ConfigurationLoader.loadExchangeConfiguration(vertx, configurationFiles)
+      .onFailure(getConfigurationThrowableHandler(startPromise))
+      .onSuccess(config -> logger.info("Retrieved Configuration {}", config))
       .onComplete(startWebsocketClient(startPromise));
   }
 
   private Handler<AsyncResult<ClientConfiguration>> startWebsocketClient(Promise<Void> startPromise) {
     return configLoaded -> {
-      logger.info("Retrieved Configuration {}", configLoaded);
       if (configLoaded.succeeded()) {
         ClientConfiguration config = configLoaded.result();
-        final HttpClient httpClient = vertx.createHttpClient(getHttpClientOptions(config));
-        createWebSocketClient(startPromise, config, httpClient);
-        completeVerticle(startPromise, this.getClass().getName(), logger);
+        createWebSocketClient(startPromise, config, getHttpClient(config));
       } else if (configLoaded.failed()) {
         logger.error("Failure loading client configuration...");
         configLoaded.cause().printStackTrace();
@@ -55,11 +62,8 @@ public class WebSocketClientVerticle extends AbstractVerticle implements Verticl
     };
   }
 
-  private static HttpClientOptions getHttpClientOptions(ClientConfiguration config) {
-    return new HttpClientOptions()
-      .setMaxWebSocketFrameSize(config.getMaxWebSocketFrameSize())
-      .setMaxWebSocketMessageSize(config.getMaxWebSocketMessageSize())
-    ;
+  private HttpClient getHttpClient(ClientConfiguration config) {
+    return vertx.createHttpClient(getHttpClientOptions(config));
   }
 
   private void createWebSocketClient(Promise<Void> startPromise, ClientConfiguration config, HttpClient httpClient) {
@@ -72,17 +76,19 @@ public class WebSocketClientVerticle extends AbstractVerticle implements Verticl
       .onFailure(throwable -> logger.error(throwable.getMessage()))
       .compose(subscribe(config))
       .onFailure(throwable -> logger.error(throwable.getMessage()))
-      .onComplete(eventHandler());
+      .onComplete(eventHandler(startPromise));
   }
 
-  private Handler<AsyncResult<WebSocket>> eventHandler() {
+  private Handler<AsyncResult<WebSocket>> eventHandler(Promise<Void> startPromise) {
     return webSocketAsyncResult -> {
       if (webSocketAsyncResult.succeeded()) {
         webSocketAsyncResult.result().handler(onEvent());
+        // Till here the vertx is complete
+        completeVerticle(startPromise, this.getClass().getName(), logger);
       } else if (webSocketAsyncResult.failed()) {
         logger.error("Failure during connection...");
         webSocketAsyncResult.cause().printStackTrace();
-        throw new IllegalStateException("Something went wrong during the websocket connection, handler could not be initialized.");
+        throw new IllegalStateException("Something went wrong during the websocket connection, websocket client could not be initialized.");
       }
     };
   }
@@ -92,11 +98,8 @@ public class WebSocketClientVerticle extends AbstractVerticle implements Verticl
       // Used to log raw price
       vertx.eventBus().publish(Topics.TOPIC_RAW_MESSAGE, buffer.toString());
       // Used as internal quote
-      QuoteNormalizer
-        .stringToQuotos(buffer.toString())
-        .stream()
-        .forEach(quote -> vertx.eventBus()
-          .publish(Topics.TOPIC_INTERNAL_QUOTE, quote));
+      QuoteNormalizer.stringToQuote(buffer.toString())
+        .forEach(quote -> vertx.eventBus().publish(Topics.TOPIC_INTERNAL_QUOTE, quote));
     };
   }
 

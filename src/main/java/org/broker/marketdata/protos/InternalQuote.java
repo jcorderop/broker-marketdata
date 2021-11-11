@@ -16,7 +16,7 @@ public final class InternalQuote {
   }
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_marketdata_Quote_descriptor;
-  static final 
+  static final
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_marketdata_Quote_fieldAccessorTable;
 
@@ -28,15 +28,19 @@ public final class InternalQuote {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\023InternalQuote.proto\022\nmarketdata\"\354\001\n\005Qu" +
-      "ote\022\016\n\006source\030\001 \002(\t\022\r\n\005topic\030\002 \002(\t\022\016\n\006sy" +
-      "mbol\030\003 \002(\t\022\016\n\006action\030\004 \002(\t\022\021\n\tmarkPrice\030" +
-      "\005 \001(\001\022\020\n\010bidPrice\030\006 \001(\001\022\020\n\010midPrice\030\007 \001(" +
-      "\001\022\020\n\010askPrice\030\010 \001(\001\022\016\n\006volume\030\t \001(\001\022\027\n\017s" +
-      "ourceTimestamp\030\n \001(\003\022\030\n\020arrivalTimestamp" +
-      "\030\013 \001(\003\022\030\n\020publishTimestamp\030\014 \001(\003B/\n\034org." +
-      "broker.marketdata.protosB\rInternalQuoteP" +
-      "\001"
+      "\n\023InternalQuote.proto\022\nmarketdata\"\242\003\n\005Qu" +
+        "ote\022\016\n\006source\030\001 \001(\t\022\r\n\005topic\030\002 \001(\t\022\016\n\006ac" +
+        "tion\030\003 \001(\t\022\023\n\006symbol\030\004 \001(\tH\000\210\001\001\022\026\n\tmarkP" +
+        "rice\030\005 \001(\001H\001\210\001\001\022\025\n\010bidPrice\030\006 \001(\001H\002\210\001\001\022\025" +
+        "\n\010midPrice\030\007 \001(\001H\003\210\001\001\022\025\n\010askPrice\030\010 \001(\001H" +
+        "\004\210\001\001\022\023\n\006volume\030\t \001(\001H\005\210\001\001\022\034\n\017sourceTimes" +
+        "tamp\030\n \001(\003H\006\210\001\001\022\035\n\020arrivalTimestamp\030\013 \001(" +
+        "\003H\007\210\001\001\022\035\n\020publishTimestamp\030\014 \001(\003H\010\210\001\001B\t\n" +
+        "\007_symbolB\014\n\n_markPriceB\013\n\t_bidPriceB\013\n\t_" +
+        "midPriceB\013\n\t_askPriceB\t\n\007_volumeB\022\n\020_sou" +
+        "rceTimestampB\023\n\021_arrivalTimestampB\023\n\021_pu" +
+        "blishTimestampB/\n\034org.broker.marketdata." +
+        "protosB\rInternalQuoteP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -46,8 +50,8 @@ public final class InternalQuote {
       getDescriptor().getMessageTypes().get(0);
     internal_static_marketdata_Quote_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_marketdata_Quote_descriptor,
-        new java.lang.String[] { "Source", "Topic", "Symbol", "Action", "MarkPrice", "BidPrice", "MidPrice", "AskPrice", "Volume", "SourceTimestamp", "ArrivalTimestamp", "PublishTimestamp", });
+      internal_static_marketdata_Quote_descriptor,
+      new java.lang.String[]{"Source", "Topic", "Action", "Symbol", "MarkPrice", "BidPrice", "MidPrice", "AskPrice", "Volume", "SourceTimestamp", "ArrivalTimestamp", "PublishTimestamp", "Symbol", "MarkPrice", "BidPrice", "MidPrice", "AskPrice", "Volume", "SourceTimestamp", "ArrivalTimestamp", "PublishTimestamp",});
   }
 
   // @@protoc_insertion_point(outer_class_scope)

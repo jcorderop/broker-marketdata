@@ -56,10 +56,8 @@ public class ClientConfiguration {
   private static JsonArray createSymbolSubscription(DocumentContext context) {
     logger.info("Loading symbol...");
     final JsonArray subscriptions = new JsonArray();
-    ((List < String >) context.read(PATH_WS_CLIENT_SYMBOL)).stream()
-      .map(ticker -> new StringBuilder()
-        .append("instrument:")
-        .append(ticker).toString())
+    ((List<String>) context.read(PATH_WS_CLIENT_SYMBOL)).stream()
+      .map(ticker -> "instrument:" + ticker)
       .forEach(subscription -> {
         logger.info(subscription);
         subscriptions.add(subscription);
@@ -70,11 +68,7 @@ public class ClientConfiguration {
 
   private static String buildSubscriptionPath(final DocumentContext context) {
     logger.info("Building websocket subscription path");
-    final String path = new StringBuilder()
-      .append(context.read(PATH_WS_CLIENT_PATH).toString())
-      //.append(context.read(PATH_WS_QUOTE_SUBSCRIPTION_REQUEST).toString())
-      //.append(context.read(PATH_WS_CLIENT_ORDER_BOOK_L_2_25_SUBSCRIPTION_REQUEST).toString())
-      .toString();
+    final String path = context.read(PATH_WS_CLIENT_PATH).toString();
     logger.info("Subscription path: {}", path);
     return path;
   }

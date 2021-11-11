@@ -2,7 +2,6 @@ package org.broker.marketdata.configuration;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import lombok.Builder;
 import lombok.NonNull;

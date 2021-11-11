@@ -1,4 +1,4 @@
-syntax = "proto2";
+syntax = "proto3";
 
 package marketdata;
 
@@ -7,11 +7,11 @@ option java_package = "org.broker.marketdata.protos";
 option java_outer_classname = "InternalQuote";
 
 message Quote {
-  required string source = 1;
-  required string topic = 2;
-  required string symbol = 3;
-  required string action = 4;
+  string source = 1;
+  string topic = 2;
+  string action = 3;
 
+  optional string symbol = 4;
   optional double markPrice = 5;
   optional double bidPrice = 6;
   optional double midPrice = 7;
@@ -21,4 +21,5 @@ message Quote {
   optional int64 sourceTimestamp = 10;
   optional int64 arrivalTimestamp = 11;
   optional int64 publishTimestamp = 12;
+
 }

@@ -1,15 +1,24 @@
 package org.broker.marketdata.protos.normalizer;
 
-
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+import org.broker.marketdata.exchange.bitmex.BitmexHandler;
+import org.broker.marketdata.protos.Quote;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
-import static org.broker.marketdata.protos.normalizer.QuoteNormalizer.stringToQuotos;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.broker.marketdata.protos.normalizer.QuoteNormalizer.stringToQuote;
+
 
 class QuoteNormalizerTest {
 
@@ -21,37 +30,115 @@ class QuoteNormalizerTest {
   void tearDown() {
   }
 
-  @Test
-  void create_a_quote_from_bitmex_message() {
-    String message = "{\n" +
-      "  \"table\": \"instrument\",\n" +
-      "  \"action\": \"update\",\n" +
-      "  \"data\": [\n" +
-      "    {\n" +
-      "      \"symbol\": \"XBTUSD\",\n" +
-      "      \"fairPrice\": 61544.95,\n" +
-      "      \"fairBasis\": 18.98,\n" +
-      "      \"markPrice\": 61544.95,\n" +
-      "      \"openValue\": 93721006815,\n" +
-      "      \"timestamp\": \"2021-11-06T21:47:50.000Z\",\n" +
-      "      \"indicativeSettlePrice\": 61525.97\n" +
-      "    }\n" +
-      "  ]\n" +
-      "}";
-    stringToQuotos(message).stream().forEach(quote -> {
+  private static JsonObject getPriceJson(String topic, String action, String symbol, Double markPrice, Double bidPrice, Double midPrice, Double askPrice, Double volume, String sourceTimestamp) {
+    final JsonObject message = new JsonObject();
+    message.put("table", topic);
+    message.put("action", action);
+
+    final JsonObject tick = new JsonObject();
+    tick.put("symbol", symbol);
+    tick.put("markPrice", markPrice);
+    tick.put("bidPrice", bidPrice);
+    tick.put("midPrice", midPrice);
+    tick.put("askPrice", askPrice);
+    tick.put("volume", volume);
+    tick.put("timestamp", sourceTimestamp);
+    message.put("data", new JsonArray().add(tick));
+    System.out.println("INPUT: " + message.encode());
+    return message;
+  }
+
+  @ParameterizedTest(name = "topic={0},action={1},symbol={2},markPrice={3},bidPrice={4}, midPrice={5},askPrice={6},volume={7},sourceTimestamp={8}")
+  @CsvFileSource(resources = "/org/broker/marketdata/client/protos/normalizer/correctBitmexPrices.csv", numLinesToSkip = 1)
+  void create_a_complet_quote_from_bitmex_message_converted_to_internal_quote(String topic
+    , String action
+    , String symbol
+    , Double markPrice
+    , Double bidPrice
+    , Double midPrice
+    , Double askPrice
+    , Double volume
+    , String sourceTimestamp) {
+
+    //given
+    final JsonObject message = getPriceJson(topic, action, symbol, markPrice, bidPrice, midPrice, askPrice, volume, sourceTimestamp);
+
+    // when
+    final Supplier<Stream<Quote>> streamSupplier = getQuoteSupplier(message);
+
+    // then
+    assertThat(streamSupplier.get().count()).isEqualTo(1);
+    streamSupplier.get().forEach(quote -> {
       try {
-        String json = JsonFormat.printer().print(quote);
-        System.out.println(json);
+        System.out.println(JsonFormat.printer().includingDefaultValueFields().print(quote));
       } catch (InvalidProtocolBufferException e) {
         e.printStackTrace();
       }
-      //final DocumentContext messageContext = JsonPath.parse(quote).;
-      //System.out.println(messageContext.jsonString());
-      //JsonObject json = JsonObject.mapFrom(quote.getDefaultInstanceForType());
-      //System.out.println(json);
+
+      assertThat(quote.getSource())
+        .isEqualTo(BitmexHandler.SOURCE);
+      assertThat(quote.getTopic())
+        .isEqualTo(topic);
+      assertThat(quote.getAction())
+        .isEqualTo(action);
+      assertThat(quote.getSymbol())
+        .isEqualTo(symbol);
+      assertThat(quote.getMarkPrice())
+        .isEqualTo(Optional.ofNullable(markPrice)
+          .orElse(0.0));
+      assertThat(quote.getBidPrice())
+        .isEqualTo(Optional.ofNullable(bidPrice)
+          .orElse(0.0));
+      assertThat(quote.getMidPrice())
+        .isEqualTo(Optional.ofNullable(midPrice)
+          .orElse(0.0));
+      assertThat(quote.getAskPrice())
+        .isEqualTo(Optional.ofNullable(askPrice)
+          .orElse(0.0));
+      assertThat(quote.getVolume())
+        .isEqualTo(Optional.ofNullable(volume)
+          .orElse(0.0));
+      assertThat(quote.getSourceTimestamp())
+        .isNotNull();
+      assertThat(quote.hasSourceTimestamp()).isEqualTo(true);
+      assertThat(quote.hasArrivalTimestamp()).isEqualTo(true);
+
     });
 
+  }
 
+  @ParameterizedTest(name = "topic={0},action={1},symbol={2},markPrice={3},bidPrice={4}, midPrice={5},askPrice={6},volume={7},sourceTimestamp={8}")
+  @CsvFileSource(resources = "/org/broker/marketdata/client/protos/normalizer/invalidBitmexPrices.csv", numLinesToSkip = 1)
+  void invalid_quote_from_bitmex_message_converted_to_internal_quote(String topic
+    , String action
+    , String symbol
+    , Double markPrice
+    , Double bidPrice
+    , Double midPrice
+    , Double askPrice
+    , Double volume
+    , String sourceTimestamp) {
+
+    //given
+    final JsonObject message = getPriceJson(topic, action, symbol, markPrice, bidPrice, midPrice, askPrice, volume, sourceTimestamp);
+
+    // when
+    final Supplier<Stream<Quote>> streamSupplier = getQuoteSupplier(message);
+
+    // then
+    assertThat(streamSupplier.get().count()).isEqualTo(0);
+    streamSupplier.get().forEach(quote -> {
+      try {
+        System.out.println(JsonFormat.printer().includingDefaultValueFields().print(quote));
+      } catch (InvalidProtocolBufferException e) {
+        e.printStackTrace();
+      }
+    });
+  }
+
+  private Supplier<Stream<Quote>> getQuoteSupplier(JsonObject message) {
+    final List<Quote> quotes = stringToQuote(message.encode());
+    return quotes::stream;
   }
 
 }

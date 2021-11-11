@@ -1,121 +1,134 @@
 = Broker-marketdata
 
-* This component is used to normalize prices from BitMex to internal quotes.
+image::MarketDataService.PNG[]
+
+* MarketDataService is used to normalize prices from BitMex to internal quotes.
 * It has a client websocket that connects to BitMex.
 * Data received is sent via vertx bus to two topics:
 
     Topic: raw_data
         * raw quotes recevied from BitMex are logged asynchronous for audit
 
-* Quotes are normalized into a Google Proto Buffer object and this object is sent
-to a different topic simultaneously:
+* Quotes are normalized into a Google Proto Buffer object and this object is sent to a different topic simultaneously:
 
    Topic: internal_quotes
         * Two components are reading from this topic
-        1) Storage that stores the internal normilized prices
-        2) Websocket server, this component publish the mesages to clients
+        1) StorageVerticle that stores the internal normilized prices
+        2) WebsocketServerVerticle, this component publish the mesages to clients
         subscribed for internal use
 
+== BitMEX API:
 
-
-BitMex API:
-
-    https://www.bitmex.com/app/apiOverview
-
-It subscribes to topic instrument updates via Websockets:
+* The service subscribes to BitMEX topic "instrument" and updates are received via Websockets:
 
     https://www.bitmex.com/app/wsAPI
 
-Connection to:
+* Connection to:
 
     wss://www.bitmex.com/realtime
 
-Topic:
+* Topic:
 
     "instrument",          // Instrument updates including turnover and bid/ask
 
-To manage the configuration of the topics it can be changed in the file:
+* To manage the configuration of the topics it can be changed in the file:
 
     broker-marketdata/src/main/resources/application.ymal
 
-In to the property definition:
+* In to the property definition:
 
     ws.client.symbol
 
+=== BitMex API Help
 
-= Vertx
+    https://www.bitmex.com/app/apiOverview
+
+== Vertx
 
 image:https://img.shields.io/badge/vert.x-4.2.0-purple.svg[link="https://vertx.io"]
 
 This application was generated using http://start.vertx.io
 
-== Building
+=== Building
 
-To launch your tests:
-```
-./mvnw clean test
-```
+* Go to <WORKSPACE>/broker_marketdata/
 
-To package your application:
-```
-./mvnw clean package
-```
+* To launch your tests:
 
-To run your application:
-```
+    ./mvnw clean test
+
+* To package your application:
+
+    ./mvnw clean package
+
+* To run your application:
+
 ./mvnw clean compile exec:java
-```
+IMPORTANT: If you run the service locally, you have to deploy PostgreSql first, for more details go to dockers secions.
 
-== Help
+=== Vertx Help
 
 * https://vertx.io/docs/[Vert.x Documentation]
 * https://stackoverflow.com/questions/tagged/vert.x?sort=newest&pageSize=15[Vert.x Stack Overflow]
 * https://groups.google.com/forum/?fromgroups#!forum/vertx[Vert.x User Group]
 * https://gitter.im/eclipse-vertx/vertx-users[Vert.x Gitter]
 
-= Google Protocol Buffers
+== Google Protocol Buffers
 
-== Building
+=== Building
 
 To build InternalPrice.proto:
 
 * Add the environment variable PROTOC_PATH where protoc in installed.
 * Go to terminal in the project and execute
-```
-.\build_protoc.bat
-```
+
+    .\build_protoc.bat
+
 * It will create the relevant classes for InternalPrice.
 * InternalPrice is the serialized object that will be sent.
 * For debugging you can set the variable serialization:false in the config file
 
-== Help
+=== Google Protocol Buffers Help
 
 https://developers.google.com/protocol-buffers/docs/javatutorial
 
-
-= Storage
+== Storage
 
 * Uses PostgreSql to store prices as docker image
 * Uses flyway as a database management control
 
+== Docker-compose
 
-= Build Containers
+=== Building
 
-== Building
+To deploy the MarketDataService with PostgreSql
 
 * Go to <WORKSPACE>/broker_marketdata/cocker-compose/marketdata
 * execute
 
-```
-broker-marketdata\docker-compose\marketdata\
-docker-compose up -d
-```
+    docker-compose up -d
 
-* it will deploy the container with market-data-service and posgress
-* to test the websocket connect using https://websocketking.com/
+To deploy the MarketDataService with PostgreSql
 
-```
-ws://localhost:8900/realtime/quotes
-```
+* Go to <WORKSPACE>/broker_marketdata/cocker-compose/postgresql
+* execute
+
+    docker-compose up -d
+
+== Websocket MarketDataService Test
+
+=== Online client
+
+Once the service is running locally or in a container
+
+* to test the websocket connect using
+
+    https://websocketking.com/
+    https://www.piesocket.com/websocket-tester#
+
+* use the following path
+
+    ws://localhost:8900/realtime/quotes
+
 
 

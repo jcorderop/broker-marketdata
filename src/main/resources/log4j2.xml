@@ -9,7 +9,7 @@
           <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </File>
 
-        <File name="PricesAppender" fileName="logs/prices.log" >
+        <File name="PricesAppender" fileName="logs/quotes.log">
           <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level - %msg%n"/>
         </File>
         <Async name="AsyncAppender">

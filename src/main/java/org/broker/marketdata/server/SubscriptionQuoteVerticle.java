@@ -4,24 +4,20 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.eventbus.Message;
 import io.vertx.core.http.ServerWebSocket;
-import io.vertx.core.json.JsonObject;
-import org.broker.marketdata.bus.LocalMessageCodec;
 import org.broker.marketdata.common.VerticleCommon;
 import org.broker.marketdata.configuration.Topics;
 import org.broker.marketdata.protos.Quote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SubscriptionPriceVerticle extends AbstractVerticle implements VerticleCommon {
+public class SubscriptionQuoteVerticle extends AbstractVerticle implements VerticleCommon {
 
-  private static final Logger logger = LoggerFactory.getLogger(SubscriptionPriceVerticle.class);
+  private static final Logger logger = LoggerFactory.getLogger(SubscriptionQuoteVerticle.class);
 
-  private final PriceBroadcast broadcast;
+  private final QuoteBroadcast broadcast;
 
-  public SubscriptionPriceVerticle(PriceBroadcast broadcast) {
+  public SubscriptionQuoteVerticle(QuoteBroadcast broadcast) {
     this.broadcast = broadcast;
   }
 
@@ -34,12 +30,12 @@ public class SubscriptionPriceVerticle extends AbstractVerticle implements Verti
 
   private void pushQuote(Quote quote) {
     for (ServerWebSocket ws : broadcast.getConnections().values()) {
-      logger.debug("PUBLISHING QUOTES: {}",quote);
+      logger.debug("PUBLISHING QUOTES: {}", quote);
       try {
         //ws.writeBinaryMessage(Buffer.buffer(quote.toByteArray()));
         ws.writeTextMessage(JsonFormat.printer().print(quote));
       } catch (InvalidProtocolBufferException e) {
-        logger.error("Quote could not be converted to json, ", e.getMessage());
+        logger.error("Quote could not be converted to json, {}", e.getMessage());
       }
     }
   }

@@ -12,7 +12,7 @@ services:
       # enforce UTC timezone
       TZ: UTC
     volumes:
-      - marketdata-data-local:/var/lib/postgresql/marketdata/data
+      - postgresql-data-local:/var/lib/postgresql/data
     ports:
       - 5432:5432
     networks:
@@ -25,23 +25,11 @@ services:
     networks:
       - jcorderop-network
 
-  marketdataservice:
-    image: jcorderop/market-data-service:latest
-    ports:
-      - "8900:8900"
-    environment:
-      APP_ENV: "PROD"
-    networks:
-      - jcorderop-network
-    depends_on:
-      - postgres_db
-    links:
-      - postgres_db:database
 
 # permanent storage of data.
 # > docker volume rm marketdata-data-local
 volumes:
-  marketdata-data-local:
+  postgresql-data-local:
 
 networks:
   jcorderop-network:

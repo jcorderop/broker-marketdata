@@ -1,0 +1,5 @@
+topic,action,symbol,markPrice,bidPrice,midPrice,askPrice,volume,timestamp
+,update,XBTUSD,,61544.95,61543.95,61542.95,40000,2021-11-06T21:47:50.000Z
+instrument,,XBTUSD,61545.95,,61543.95,61542.95,40000,2021-11-06T21:47:50.000Z
+instrument,update,,61545.95,61544.95,,61542.95,40000,2021-11-06T21:47:50.000Z
+instrument,update,XBTUSD,61545.95,61544.95,61543.95,,40000,

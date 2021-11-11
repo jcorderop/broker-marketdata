@@ -1,32 +1,26 @@
 package org.broker.marketdata.server;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Promise;
-import io.vertx.core.Vertx;
-import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.ServerWebSocket;
-import io.vertx.core.json.JsonObject;
-import org.broker.marketdata.client.WebSocketClientVerticle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Duration;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
-public class PriceBroadcast {
+public class QuoteBroadcast {
 
   private static final Logger logger = LoggerFactory.getLogger(WebSocketHandler.class);
   private final Map<String, ServerWebSocket> connections = new HashMap<>();
 
   public void register(ServerWebSocket ws) {
     connections.put(ws.textHandlerID(), ws);
+    logger.info("Client added, number of connections: {}", connections.size());
   }
 
   public void unregister(ServerWebSocket ws) {
     connections.remove(ws.textHandlerID());
+    logger.info("Client removed, Number of connections: {}", connections.size());
   }
 
   public Map<String, ServerWebSocket> getConnections() {

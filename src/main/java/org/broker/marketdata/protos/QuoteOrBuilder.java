@@ -8,72 +8,70 @@ public interface QuoteOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>required string source = 1;</code>
-   * @return Whether the source field is set.
-   */
-  boolean hasSource();
-  /**
-   * <code>required string source = 1;</code>
+   * <code>string source = 1;</code>
+   *
    * @return The source.
    */
   java.lang.String getSource();
+
   /**
-   * <code>required string source = 1;</code>
+   * <code>string source = 1;</code>
+   *
    * @return The bytes for source.
    */
   com.google.protobuf.ByteString
       getSourceBytes();
 
   /**
-   * <code>required string topic = 2;</code>
-   * @return Whether the topic field is set.
-   */
-  boolean hasTopic();
-  /**
-   * <code>required string topic = 2;</code>
+   * <code>string topic = 2;</code>
+   *
    * @return The topic.
    */
   java.lang.String getTopic();
+
   /**
-   * <code>required string topic = 2;</code>
+   * <code>string topic = 2;</code>
+   *
    * @return The bytes for topic.
    */
   com.google.protobuf.ByteString
-      getTopicBytes();
+  getTopicBytes();
 
   /**
-   * <code>required string symbol = 3;</code>
+   * <code>string action = 3;</code>
+   *
+   * @return The action.
+   */
+  java.lang.String getAction();
+
+  /**
+   * <code>string action = 3;</code>
+   *
+   * @return The bytes for action.
+   */
+  com.google.protobuf.ByteString
+  getActionBytes();
+
+  /**
+   * <code>optional string symbol = 4;</code>
+   *
    * @return Whether the symbol field is set.
    */
   boolean hasSymbol();
+
   /**
-   * <code>required string symbol = 3;</code>
+   * <code>optional string symbol = 4;</code>
+   *
    * @return The symbol.
    */
   java.lang.String getSymbol();
+
   /**
-   * <code>required string symbol = 3;</code>
+   * <code>optional string symbol = 4;</code>
    * @return The bytes for symbol.
    */
   com.google.protobuf.ByteString
       getSymbolBytes();
-
-  /**
-   * <code>required string action = 4;</code>
-   * @return Whether the action field is set.
-   */
-  boolean hasAction();
-  /**
-   * <code>required string action = 4;</code>
-   * @return The action.
-   */
-  java.lang.String getAction();
-  /**
-   * <code>required string action = 4;</code>
-   * @return The bytes for action.
-   */
-  com.google.protobuf.ByteString
-      getActionBytes();
 
   /**
    * <code>optional double markPrice = 5;</code>

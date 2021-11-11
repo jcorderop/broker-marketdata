@@ -1,0 +1,29 @@
+version: "0.0.1"
+
+ws:
+  server:
+    host: "localhost"
+    port: 8900
+    path: "/realtime/quotes"
+    serialization: false
+
+  client:
+    host: "testnet.bitmex.com2"
+    port: 443
+    path: "/realtime"
+    #quoteSubscriptionRequest: "?subscribe=instrument,quote:XBTUSD"
+    #orderBookL2_25SubscriptionRequest: "?subscribe=instrument,orderBookL2_25:XBTUSD"
+    maxWebSocketFrameSize: 1024000
+    maxWebSocketMessageSize: 1024000
+    symbol:
+      - XBTUSD
+      - SOLUSD
+
+db:
+  server:
+    host: "localhost"
+    port: 5432
+    database: "marketdata"
+    user: "postgres"
+    password: "secret"
+
