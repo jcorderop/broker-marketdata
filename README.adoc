@@ -1,9 +1,24 @@
 = Broker-marketdata
 
+== New features from branch "springboot-vertx":
+
+* Introduced Spring Boot
+    - Used to simplify code injecting instances and constructors.
+    - Simplify configuration.
+    - Reduce dependencies in POM.
+    - Verticles are independent and keep communicating asynchronously via the Vertx-Bus.
+    - JPA+Hibernate to handle the storage.
+        - Given the amount of quotes that can be stored the database is drop every restart during dev time.
+    - Added H2 for the unit test.
+    - Added latency measurement from the time the tick arrives to when it is published, subscribe to ws://localhost:8900/realtime/quotes.
+* Original Vertx code in branch "vertx"
+
+== MarketDataService Project Description:
+
 image::MarketDataService.PNG[]
 
 * MarketDataService is used to normalize prices from BitMex to internal quotes.
-* It has a client websocket that connects to BitMex.
+* It has a client websocket that connects to BitMEX.
 * Data received is sent via vertx bus to two topics:
 
     Topic: raw_data
@@ -16,6 +31,31 @@ image::MarketDataService.PNG[]
         1) StorageVerticle that stores the internal normilized prices
         2) WebsocketServerVerticle, this component publish the mesages to clients
         subscribed for internal use
+
+== Project
+
+=== Building
+
+* Go to <WORKSPACE>/broker_marketdata/
+
+* To launch the tests:
+
+    mvn clean test
+
+* To package the application:
+
+    mvn clean package
+
+* To run/stop the application:
+
+    mvn spring-boot:run
+    mvn spring-boot:stop
+
+* To build a new docker image:
+
+    mvn spring-boot:build-image
+
+IMPORTANT: If you run the service locally, you have to deploy PostgreSql first, for more details go to dockers section.
 
 == BitMEX API:
 
@@ -48,23 +88,6 @@ image::MarketDataService.PNG[]
 image:https://img.shields.io/badge/vert.x-4.2.0-purple.svg[link="https://vertx.io"]
 
 This application was generated using http://start.vertx.io
-
-=== Building
-
-* Go to <WORKSPACE>/broker_marketdata/
-
-* To launch your tests:
-
-    ./mvnw clean test
-
-* To package your application:
-
-    ./mvnw clean package
-
-* To run your application:
-
-./mvnw clean compile exec:java
-IMPORTANT: If you run the service locally, you have to deploy PostgreSql first, for more details go to dockers secions.
 
 === Vertx Help
 

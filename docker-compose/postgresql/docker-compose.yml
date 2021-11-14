@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
 
-  postgres_db:
+  postgresdev:
     image: postgres:13.0-alpine
     environment:
       # Create db
@@ -15,15 +15,11 @@ services:
       - postgresql-data-local:/var/lib/postgresql/data
     ports:
       - 5432:5432
-    networks:
-      - jcorderop-network
 
   adminer:
     image: adminer:4
     ports:
       - 8081:8080
-    networks:
-      - jcorderop-network
 
 
 # permanent storage of data.
@@ -31,8 +27,6 @@ services:
 volumes:
   postgresql-data-local:
 
-networks:
-  jcorderop-network:
 
 
 

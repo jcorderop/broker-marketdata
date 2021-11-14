@@ -68,8 +68,9 @@ public class QuoteNormalizer {
                                       Optional<String> action,
                                       Quote.Builder quote,
                                       DocumentContext messageContext) {
-
     quote.setArrivalTimestamp(System.currentTimeMillis());
+    quote.setQuoteId(System.nanoTime());
+    quote.setStage(Quote.StageType.RAW);
     quote.setSource(BitmexHandler.SOURCE);
     quote.setTopic(topic.orElseThrow(() -> new IllegalStateException("Topic not present.")));
     quote.setAction(action.orElseThrow(() -> new IllegalStateException("Action not present.")));

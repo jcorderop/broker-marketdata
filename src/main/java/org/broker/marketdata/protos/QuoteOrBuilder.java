@@ -8,155 +8,159 @@ public interface QuoteOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string source = 1;</code>
-   *
+   * <code>int64 quoteId = 1;</code>
+   * @return The quoteId.
+   */
+  long getQuoteId();
+
+  /**
+   * <code>string source = 2;</code>
    * @return The source.
    */
   java.lang.String getSource();
-
   /**
-   * <code>string source = 1;</code>
-   *
+   * <code>string source = 2;</code>
    * @return The bytes for source.
    */
   com.google.protobuf.ByteString
       getSourceBytes();
 
   /**
-   * <code>string topic = 2;</code>
-   *
+   * <code>string topic = 3;</code>
    * @return The topic.
    */
   java.lang.String getTopic();
-
   /**
-   * <code>string topic = 2;</code>
-   *
+   * <code>string topic = 3;</code>
    * @return The bytes for topic.
    */
   com.google.protobuf.ByteString
-  getTopicBytes();
+      getTopicBytes();
 
   /**
-   * <code>string action = 3;</code>
-   *
+   * <code>string action = 4;</code>
    * @return The action.
    */
   java.lang.String getAction();
-
   /**
-   * <code>string action = 3;</code>
-   *
+   * <code>string action = 4;</code>
    * @return The bytes for action.
    */
   com.google.protobuf.ByteString
-  getActionBytes();
+      getActionBytes();
 
   /**
-   * <code>optional string symbol = 4;</code>
-   *
+   * <code>.marketdata.Quote.StageType stage = 5;</code>
+   * @return The enum numeric value on the wire for stage.
+   */
+  int getStageValue();
+  /**
+   * <code>.marketdata.Quote.StageType stage = 5;</code>
+   * @return The stage.
+   */
+  org.broker.marketdata.protos.Quote.StageType getStage();
+
+  /**
+   * <code>optional string symbol = 6;</code>
    * @return Whether the symbol field is set.
    */
   boolean hasSymbol();
-
   /**
-   * <code>optional string symbol = 4;</code>
-   *
+   * <code>optional string symbol = 6;</code>
    * @return The symbol.
    */
   java.lang.String getSymbol();
-
   /**
-   * <code>optional string symbol = 4;</code>
+   * <code>optional string symbol = 6;</code>
    * @return The bytes for symbol.
    */
   com.google.protobuf.ByteString
       getSymbolBytes();
 
   /**
-   * <code>optional double markPrice = 5;</code>
+   * <code>optional double markPrice = 7;</code>
    * @return Whether the markPrice field is set.
    */
   boolean hasMarkPrice();
   /**
-   * <code>optional double markPrice = 5;</code>
+   * <code>optional double markPrice = 7;</code>
    * @return The markPrice.
    */
   double getMarkPrice();
 
   /**
-   * <code>optional double bidPrice = 6;</code>
+   * <code>optional double bidPrice = 8;</code>
    * @return Whether the bidPrice field is set.
    */
   boolean hasBidPrice();
   /**
-   * <code>optional double bidPrice = 6;</code>
+   * <code>optional double bidPrice = 8;</code>
    * @return The bidPrice.
    */
   double getBidPrice();
 
   /**
-   * <code>optional double midPrice = 7;</code>
+   * <code>optional double midPrice = 9;</code>
    * @return Whether the midPrice field is set.
    */
   boolean hasMidPrice();
   /**
-   * <code>optional double midPrice = 7;</code>
+   * <code>optional double midPrice = 9;</code>
    * @return The midPrice.
    */
   double getMidPrice();
 
   /**
-   * <code>optional double askPrice = 8;</code>
+   * <code>optional double askPrice = 10;</code>
    * @return Whether the askPrice field is set.
    */
   boolean hasAskPrice();
   /**
-   * <code>optional double askPrice = 8;</code>
+   * <code>optional double askPrice = 10;</code>
    * @return The askPrice.
    */
   double getAskPrice();
 
   /**
-   * <code>optional double volume = 9;</code>
+   * <code>optional double volume = 11;</code>
    * @return Whether the volume field is set.
    */
   boolean hasVolume();
   /**
-   * <code>optional double volume = 9;</code>
+   * <code>optional double volume = 11;</code>
    * @return The volume.
    */
   double getVolume();
 
   /**
-   * <code>optional int64 sourceTimestamp = 10;</code>
+   * <code>optional int64 sourceTimestamp = 12;</code>
    * @return Whether the sourceTimestamp field is set.
    */
   boolean hasSourceTimestamp();
   /**
-   * <code>optional int64 sourceTimestamp = 10;</code>
+   * <code>optional int64 sourceTimestamp = 12;</code>
    * @return The sourceTimestamp.
    */
   long getSourceTimestamp();
 
   /**
-   * <code>optional int64 arrivalTimestamp = 11;</code>
+   * <code>optional int64 arrivalTimestamp = 13;</code>
    * @return Whether the arrivalTimestamp field is set.
    */
   boolean hasArrivalTimestamp();
   /**
-   * <code>optional int64 arrivalTimestamp = 11;</code>
+   * <code>optional int64 arrivalTimestamp = 13;</code>
    * @return The arrivalTimestamp.
    */
   long getArrivalTimestamp();
 
   /**
-   * <code>optional int64 publishTimestamp = 12;</code>
+   * <code>optional int64 publishTimestamp = 14;</code>
    * @return Whether the publishTimestamp field is set.
    */
   boolean hasPublishTimestamp();
   /**
-   * <code>optional int64 publishTimestamp = 12;</code>
+   * <code>optional int64 publishTimestamp = 14;</code>
    * @return The publishTimestamp.
    */
   long getPublishTimestamp();

@@ -11,28 +11,37 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.broker.marketdata.server.WebSocketHandler.CONNECTED;
-import static org.broker.marketdata.server.WebSocketHandler.DISCONNECT;
+import static org.broker.marketdata.server.WebsocketHandler.CONNECTED;
+import static org.broker.marketdata.server.WebsocketHandler.DISCONNECT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@SpringBootTest(properties="springBootApp.workOffline=true")
+@ActiveProfiles("test")
 @ExtendWith(VertxExtension.class)
 class MarketDataServiceTest {
 
-  public static final int EXPECTED_MESSAGES = 5;
-  public static final int PORT = 8900;
-  public static final String LOCALHOST = "localhost";
-  public static final String REALTIME_QUOTES = "/realtime/quotes";
+  private static final int EXPECTED_MESSAGES = 5;
+  private static final int PORT = 8900;
+  private static final String LOCALHOST = "localhost";
+  private static final String REALTIME_QUOTES = "/realtime/quotes";
+
   private static final Logger logger = LoggerFactory.getLogger(MarketDataServiceTest.class);
 
+  @Autowired
+  MarketDataService marketDataService;
+
   @BeforeEach
-  void deploy_verticle(Vertx vertx, VertxTestContext testContext) {
-    vertx.deployVerticle(new MarketDataService(), testContext.succeeding(id -> testContext.completeNow()));
+  void deploy_vertible(Vertx vertx, VertxTestContext testContext) {
+    vertx.deployVerticle(marketDataService, testContext.succeeding(id -> testContext.completeNow()));
   }
 
   @AfterEach
@@ -116,7 +125,7 @@ class MarketDataServiceTest {
       .onFailure(testContext::failNow)
       .onComplete(testContext.succeeding(ws -> ws.handler(data -> {
           final var receivedData = data.toString();
-          logger.info("Received message: {}", receivedData);
+          logger.info("Unit Test, Received message: {}", receivedData);
           var currentValue = counter.getAndIncrement();
           if (currentValue >= EXPECTED_MESSAGES) {
             client.close();
