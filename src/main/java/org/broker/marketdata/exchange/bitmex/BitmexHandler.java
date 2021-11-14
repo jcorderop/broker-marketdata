@@ -4,7 +4,9 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.sqlclient.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BitmexHandler implements ExchangeHandler {
 
   private static final Logger logger = LoggerFactory.getLogger(BitmexHandler.class);

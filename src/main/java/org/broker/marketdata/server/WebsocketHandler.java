@@ -1,26 +1,25 @@
 package org.broker.marketdata.server;
 
 import io.vertx.core.Handler;
-import io.vertx.core.Vertx;
 import io.vertx.core.http.ServerWebSocket;
 import io.vertx.core.http.WebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WebSocketHandler implements Handler<ServerWebSocket> {
+public class WebsocketHandler implements Handler<ServerWebSocket> {
 
-  private static final Logger logger = LoggerFactory.getLogger(WebSocketHandler.class);
+  private static final Logger logger = LoggerFactory.getLogger(WebsocketHandler.class);
 
   public static final String DISCONNECT = "disconnect";
   public static final String CONNECTED = "connected";
 
-  private final QuoteBroadcast broadcast;
+  private final QuoteBroadcast quoteBroadcast;
   private final String path;
 
-  public WebSocketHandler(Vertx vertx, String path) {
-    this.broadcast = new QuoteBroadcast();
+  public WebsocketHandler(String path, QuoteBroadcast quoteBroadcast) {
+    this.quoteBroadcast = quoteBroadcast;
     this.path = path;
-    vertx.deployVerticle(new SubscriptionQuoteVerticle(broadcast));
+    logger.info("WebsocketHandler Server Has been constructed.");
   }
 
   @Override
@@ -36,14 +35,14 @@ public class WebSocketHandler implements Handler<ServerWebSocket> {
     ws.endHandler(onCloseHandler(ws));
     ws.exceptionHandler(err -> logger.error("Client connection failed: ", err));
 
-    broadcast.register(ws);
+    quoteBroadcast.register(ws);
     ws.writeTextMessage(CONNECTED);
   }
 
   private Handler<Void> onCloseHandler(ServerWebSocket ws) {
     return onClose -> {
       logger.info("Connection closed: {}", ws.textHandlerID());
-      broadcast.unregister(ws);
+      quoteBroadcast.unregister(ws);
     };
   }
 

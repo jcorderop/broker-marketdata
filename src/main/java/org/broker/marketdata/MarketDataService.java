@@ -7,19 +7,31 @@ import io.vertx.core.Promise;
 import org.broker.marketdata.bus.LocalMessageCodec;
 import org.broker.marketdata.client.WebSocketClientVerticle;
 import org.broker.marketdata.common.VerticleCommon;
-import org.broker.marketdata.configuration.ConfigurationFiles;
-import org.broker.marketdata.configuration.DefaultConfigurationFiles;
-import org.broker.marketdata.exchange.bitmex.BitmexHandler;
 import org.broker.marketdata.logging.LoggingVerticle;
 import org.broker.marketdata.protos.Quote;
-import org.broker.marketdata.server.WebSockerServerVerticle;
+import org.broker.marketdata.server.WebsockerServerVerticle;
 import org.broker.marketdata.storage.StorageVerticle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MarketDataService extends AbstractVerticle implements VerticleCommon {
 
   public static final Logger logger = LoggerFactory.getLogger(MarketDataService.class);
+
+  @Autowired
+  public WebSocketClientVerticle webSocketClientVerticle;
+
+  @Autowired
+  public WebsockerServerVerticle webSockerServerVerticle;
+
+  @Autowired
+  public LoggingVerticle loggingVerticle;
+
+  @Autowired
+  public StorageVerticle storageVerticle;
 
   @Override
   public void start(Promise<Void> startPromise) throws Exception {
@@ -31,6 +43,24 @@ public class MarketDataService extends AbstractVerticle implements VerticleCommo
     startServices(startPromise);
   }
 
+
+  private void startServices(Promise<Void> startPromise) {
+    logger.info("Starting Market Data Service BITMEX Adapter...");
+    vertx.deployVerticle(storageVerticle)
+      .onFailure(startPromise::fail)
+      .compose(next -> vertx.deployVerticle(loggingVerticle))
+      .onFailure(startPromise::fail)
+      .compose(next -> vertx.deployVerticle(webSockerServerVerticle))
+      .onFailure(startPromise::fail)
+      .compose(next -> {
+        vertx.deployVerticle(webSocketClientVerticle);
+        completeVerticle(startPromise, this.getClass().getName(), logger);
+        return Future.succeededFuture();
+      })
+      .onFailure(startPromise::fail);
+  }
+
+
   private Handler<Throwable> getThrowableHandler() {
     return event -> {
       // what to do with the uncaught exception
@@ -38,28 +68,6 @@ public class MarketDataService extends AbstractVerticle implements VerticleCommo
       event.printStackTrace();
     };
   }
-
-  private void startServices(Promise<Void> startPromise) {
-    logger.info("Starting Market Data Service BITMEX Adapter...");
-    ConfigurationFiles configurationFiles = new DefaultConfigurationFiles();
-
-    // TODO - Use a framework such as Spring Boot or Quarkus on top to inject
-    vertx.deployVerticle(new StorageVerticle(configurationFiles))
-      .onFailure(startPromise::fail)
-      .compose(next -> vertx.deployVerticle(new LoggingVerticle(configurationFiles)))
-      .onFailure(startPromise::fail)
-      .compose(next -> vertx.deployVerticle(new WebSockerServerVerticle(configurationFiles)))
-      .onFailure(startPromise::fail)
-      .compose(next -> {
-        vertx.deployVerticle(new WebSocketClientVerticle(new BitmexHandler(), configurationFiles));
-        completeVerticle(startPromise, this.getClass().getName(), logger);
-        return Future.succeededFuture();
-      })
-      .onFailure(startPromise::fail);
-
-  }
-
-
 }
 
 

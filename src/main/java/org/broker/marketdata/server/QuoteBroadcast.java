@@ -3,14 +3,16 @@ package org.broker.marketdata.server;
 import io.vertx.core.http.ServerWebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class QuoteBroadcast {
 
-  private static final Logger logger = LoggerFactory.getLogger(WebSocketHandler.class);
+  private static final Logger logger = LoggerFactory.getLogger(WebsocketHandler.class);
   private final Map<String, ServerWebSocket> connections = new HashMap<>();
 
   public void register(ServerWebSocket ws) {
