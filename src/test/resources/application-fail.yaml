@@ -1,0 +1,43 @@
+ws:
+  server:
+    host: "localhost"
+    port: 8900
+    path: "/realtime/quotes"
+
+  client:
+    host: "testnet.bitmex.comXXX"
+    port: 443
+    path: "/realtime"
+    maxWebSocketFrameSize: 1024000
+    maxWebSocketMessageSize: 1024000
+    symbol:
+      - XBTUSD
+      - SOLUSD
+
+db:
+  server:
+    host: "localhost"
+    port: 5432
+    database: "marketdata"
+    user: "postgres"
+    password: "secret"
+
+server:
+  port: 8080
+  error:
+    include-binding-errors: always
+    include-message: always
+
+spring:
+  application:
+    name: "mds"
+  datasource:
+    url: "jdbc:h2:mem:testdb"
+    username: "sa"
+    password: "sa"
+    driver-class-name: "org.h2.Driver"
+  jpa:
+    database-platform: "org.hibernate.dialect.H2Dialect"
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop

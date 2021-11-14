@@ -7,19 +7,26 @@ option java_package = "org.broker.marketdata.protos";
 option java_outer_classname = "InternalQuote";
 
 message Quote {
-  string source = 1;
-  string topic = 2;
-  string action = 3;
+  int64 quoteId = 1;
+  string source = 2;
+  string topic = 3;
+  string action = 4;
+  StageType stage = 5;
 
-  optional string symbol = 4;
-  optional double markPrice = 5;
-  optional double bidPrice = 6;
-  optional double midPrice = 7;
-  optional double askPrice = 8;
-  optional double volume = 9;
+  optional string symbol = 6;
+  optional double markPrice = 7;
+  optional double bidPrice = 8;
+  optional double midPrice = 9;
+  optional double askPrice = 10;
+  optional double volume = 11;
 
-  optional int64 sourceTimestamp = 10;
-  optional int64 arrivalTimestamp = 11;
-  optional int64 publishTimestamp = 12;
+  optional int64 sourceTimestamp = 12;
+  optional int64 arrivalTimestamp = 13;
+  optional int64 publishTimestamp = 14;
+
+  enum StageType {
+    RAW = 0;
+    AGG = 1;
+  }
 
 }

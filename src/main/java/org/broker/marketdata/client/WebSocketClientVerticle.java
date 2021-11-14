@@ -8,75 +8,62 @@ import io.vertx.core.http.WebSocket;
 import io.vertx.core.http.WebSocketConnectOptions;
 import io.vertx.core.json.JsonObject;
 import org.broker.marketdata.common.VerticleCommon;
-import org.broker.marketdata.configuration.ClientConfiguration;
-import org.broker.marketdata.configuration.ConfigurationFiles;
-import org.broker.marketdata.configuration.ConfigurationLoader;
 import org.broker.marketdata.configuration.Topics;
+import org.broker.marketdata.configuration.WebsocketClientConfig;
 import org.broker.marketdata.exchange.bitmex.ExchangeHandler;
 import org.broker.marketdata.protos.normalizer.QuoteNormalizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.function.Function;
 
-import static org.broker.marketdata.configuration.ConfigurationLoader.getConfigurationThrowableHandler;
-
+@Component
 public class WebSocketClientVerticle extends AbstractVerticle implements VerticleCommon {
 
   private static final Logger logger = LoggerFactory.getLogger(WebSocketClientVerticle.class);
 
   private final ExchangeHandler exchangeHandler;
-  private final ConfigurationFiles configurationFiles;
+  private final WebsocketClientConfig websocketClientConfig;
 
+  @Autowired
   public WebSocketClientVerticle(ExchangeHandler exchangeHandler
-    , ConfigurationFiles configurationFiles) {
+    , WebsocketClientConfig websocketClientConfig) {
     this.exchangeHandler = exchangeHandler;
-    this.configurationFiles = configurationFiles;
-  }
-
-  private static HttpClientOptions getHttpClientOptions(ClientConfiguration config) {
-    return new HttpClientOptions()
-      .setMaxWebSocketFrameSize(config.getMaxWebSocketFrameSize())
-      .setMaxWebSocketMessageSize(config.getMaxWebSocketMessageSize());
+    this.websocketClientConfig = websocketClientConfig;
+    logger.info("{} configuration fetched: {}", WebsocketClientConfig.class.getSimpleName(), websocketClientConfig);
   }
 
   @Override
   public void start(Promise<Void> startPromise) throws Exception {
     deforeStartVerticle(logger, this.getClass().getName());
-    ConfigurationLoader.loadExchangeConfiguration(vertx, configurationFiles)
-      .onFailure(getConfigurationThrowableHandler(startPromise))
-      .onSuccess(config -> logger.info("Retrieved Configuration {}", config))
-      .onComplete(startWebsocketClient(startPromise));
+    createWebSocketClient(startPromise);
   }
 
-  private Handler<AsyncResult<ClientConfiguration>> startWebsocketClient(Promise<Void> startPromise) {
-    return configLoaded -> {
-      if (configLoaded.succeeded()) {
-        ClientConfiguration config = configLoaded.result();
-        createWebSocketClient(startPromise, config, getHttpClient(config));
-      } else if (configLoaded.failed()) {
-        logger.error("Failure loading client configuration...");
-        configLoaded.cause().printStackTrace();
-        throw new IllegalStateException("Something went wrong loading configuration.");
-      }
-    };
-  }
-
-  private HttpClient getHttpClient(ClientConfiguration config) {
-    return vertx.createHttpClient(getHttpClientOptions(config));
-  }
-
-  private void createWebSocketClient(Promise<Void> startPromise, ClientConfiguration config, HttpClient httpClient) {
+  private void createWebSocketClient(Promise<Void> startPromise) {
     logger.info("Creating WebSocket Client...");
-    Future<WebSocket> webSocketFuture = httpClient.webSocket(getWebSocketConfiguration(config));
+
+    Future<WebSocket> webSocketFuture = getHttpClient()
+      .webSocket(getWebSocketConfiguration());
 
     webSocketFuture
       .onFailure(throwable -> logger.error(throwable.getMessage()))
       .compose(this::isConnect)
       .onFailure(throwable -> logger.error(throwable.getMessage()))
-      .compose(subscribe(config))
+      .compose(subscribe())
       .onFailure(throwable -> logger.error(throwable.getMessage()))
       .onComplete(eventHandler(startPromise));
+  }
+
+  private HttpClient getHttpClient() {
+    return vertx.createHttpClient(getHttpClientOptions());
+  }
+
+  private HttpClientOptions getHttpClientOptions() {
+    return new HttpClientOptions()
+      .setMaxWebSocketFrameSize(websocketClientConfig.getMaxWebSocketFrameSize())
+      .setMaxWebSocketMessageSize(websocketClientConfig.getMaxWebSocketMessageSize());
   }
 
   private Handler<AsyncResult<WebSocket>> eventHandler(Promise<Void> startPromise) {
@@ -103,9 +90,9 @@ public class WebSocketClientVerticle extends AbstractVerticle implements Verticl
     };
   }
 
-  private Function<WebSocket, Future<WebSocket>> subscribe(ClientConfiguration config) {
+  private Function<WebSocket, Future<WebSocket>> subscribe() {
     return webSocket -> {
-      final JsonObject subcription = config.getSubscription();
+      final JsonObject subcription = websocketClientConfig.buildSubscription();
       logger.info("Subscribing to: {}", subcription.encode());
       webSocket.writeTextMessage(subcription.toString());
       return Future.succeededFuture(webSocket);
@@ -121,11 +108,11 @@ public class WebSocketClientVerticle extends AbstractVerticle implements Verticl
     return Future.succeededFuture(webSocket);
   }
 
-  private WebSocketConnectOptions getWebSocketConfiguration(ClientConfiguration exConfig) {
+  private WebSocketConnectOptions getWebSocketConfiguration() {
     return new WebSocketConnectOptions()
-      .setHost(exConfig.getHost())
-      .setPort(exConfig.getPort())
-      .setURI(exConfig.getPath())
+      .setHost(websocketClientConfig.getHost())
+      .setPort(websocketClientConfig.getPort())
+      .setURI(websocketClientConfig.getPath())
       .setSsl(true);
   }
 }

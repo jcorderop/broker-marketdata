@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
 
-  postgres_db:
+  postgresdev:
     image: postgres:13.0-alpine
     environment:
       # Create db
@@ -16,27 +16,27 @@ services:
     ports:
       - 5432:5432
     networks:
-      - jcorderop-network
+      - mds-network
 
   adminer:
     image: adminer:4
     ports:
       - 8081:8080
     networks:
-      - jcorderop-network
+      - mds-network
 
   marketdataservice:
-    image: jcorderop/market-data-service:latest
+    image: jcorderop/broker-marketdata:latest
     ports:
       - "8900:8900"
     environment:
-      APP_ENV: "PROD"
+      SPRING_PROFILES_ACTIVE: "docker"
     networks:
-      - jcorderop-network
+      - mds-network
     depends_on:
-      - postgres_db
+      - postgresdev
     links:
-      - postgres_db:database
+      - postgresdev:database
 
 # permanent storage of data.
 # > docker volume rm marketdata-data-local
@@ -44,7 +44,7 @@ volumes:
   marketdata-data-local:
 
 networks:
-  jcorderop-network:
+  mds-network:
 
 
 

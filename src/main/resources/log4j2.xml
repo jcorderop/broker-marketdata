@@ -18,6 +18,9 @@
     </Appenders>
     <Loggers>
 
+      <logger name="org.springframework" level="info">
+        <AppenderRef ref="AppAppender"/>
+      </logger>
       <logger name="org.broker" level="debug">
         <AppenderRef ref="AppAppender"/>
       </logger>
@@ -34,7 +37,7 @@
         <AppenderRef ref="AsyncAppender" />
       </logger>
 
-      <Root level="debug">
+      <Root level="info">
         <AppenderRef ref="ConsoleAppender" />
         <!--
         <AppenderRef ref="AppAppender"/>
