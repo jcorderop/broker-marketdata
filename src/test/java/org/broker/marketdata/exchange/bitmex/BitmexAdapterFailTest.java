@@ -1,11 +1,9 @@
-package org.broker.marketdata.client;
+package org.broker.marketdata.exchange.bitmex;
 
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
-import org.broker.marketdata.configuration.WebsocketClientConfig;
-import org.broker.marketdata.exchange.bitmex.BitmexHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,12 +21,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest(properties="springBootApp.workOffline=true")
 @TestPropertySource(properties = {"spring.config.location = classpath:application-fail.yaml"})
 @ExtendWith(VertxExtension.class)
-class WebsocketClientVerticleTest {
+class BitmexAdapterFailTest {
 
-  private static final Logger logger = LoggerFactory.getLogger(WebsocketClientVerticleTest.class);
+  private static final Logger logger = LoggerFactory.getLogger(BitmexAdapterFailTest.class);
 
   @Autowired
-  WebsocketClientConfig websocketClientConfig;
+  public BitmexAdapter bitmexAdapter;
 
   @BeforeEach
   public void beforeEach() {
@@ -38,10 +36,10 @@ class WebsocketClientVerticleTest {
   @Test
   void wrong_url_could_not_create_websocket_client(Vertx vertx, VertxTestContext testContext) throws Throwable {
     //given
-    //classpath:application-test.yaml with wrong config
+    //classpath:application-fail.yaml with wrong config
 
     //when
-    vertx.deployVerticle(new WebSocketClientVerticle(new BitmexHandler(), websocketClientConfig));
+    vertx.deployVerticle(bitmexAdapter);
 
     //then
     vertx.exceptionHandler(getHandlerForException(testContext));

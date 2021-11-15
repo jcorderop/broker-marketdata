@@ -3,25 +3,28 @@ ws:
     host: "localhost"
     port: 8900
     path: "/realtime/quotes"
-
-  client:
-    host: "testnet.bitmex.com"
-    port: 443
-    path: "/realtime"
-    maxWebSocketFrameSize: 1024000
-    maxWebSocketMessageSize: 1024000
-    symbol:
-      - XBTUSD
-      - SOLUSD
-
-db:
-  server:
-    host: "localhost"
-    port: 5432
-    database: "marketdata"
-    user: "postgres"
-    password: "secret"
-
+  bitmex:
+    client:
+      source: "BMEX"
+      host: "testnet.bitmex.com"
+      port: 443
+      path: "/realtime"
+      maxWebSocketFrameSize: 1024000
+      maxWebSocketMessageSize: 1024000
+      symbol:
+        - XBTUSD
+        - SOLUSD
+  binance:
+    client:
+      source: "BNB"
+      host: "stream.binance.com"
+      port: 9443
+      path: "/ws/stream"
+      maxWebSocketFrameSize: 1024000
+      maxWebSocketMessageSize: 1024000
+      symbol:
+        - btcusdt
+        - solusdt
 server:
   port: 8080
   error:

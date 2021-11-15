@@ -1,15 +1,17 @@
-package org.broker.marketdata.protos.normalizer;
+package org.broker.marketdata.exchange.bitmex;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import org.broker.marketdata.exchange.bitmex.BitmexHandler;
 import org.broker.marketdata.protos.Quote;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +19,13 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.broker.marketdata.protos.normalizer.QuoteNormalizer.stringToQuote;
 
+@SpringBootTest(properties="springBootApp.workOffline=true")
+@ActiveProfiles("test")
+class BitmexQuoteNormalizerTest {
 
-class QuoteNormalizerTest {
+  @Autowired
+  BitmexConfig bitmexConfig;
 
   @BeforeEach
   void setUp() {
@@ -76,7 +81,7 @@ class QuoteNormalizerTest {
       }
 
       assertThat(quote.getSource())
-        .isEqualTo(BitmexHandler.SOURCE);
+        .isEqualTo(bitmexConfig.getSource());
       assertThat(quote.getTopic())
         .isEqualTo(topic);
       assertThat(quote.getAction())
@@ -137,7 +142,7 @@ class QuoteNormalizerTest {
   }
 
   private Supplier<Stream<Quote>> getQuoteSupplier(JsonObject message) {
-    final List<Quote> quotes = stringToQuote(message.encode());
+    final List<Quote> quotes = new BitmexQuoteNormalizer(bitmexConfig).stringToQuote(message.encode());
     return quotes::stream;
   }
 

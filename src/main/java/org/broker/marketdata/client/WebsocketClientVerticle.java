@@ -8,31 +8,26 @@ import io.vertx.core.http.WebSocket;
 import io.vertx.core.http.WebSocketConnectOptions;
 import io.vertx.core.json.JsonObject;
 import org.broker.marketdata.common.VerticleCommon;
+import org.broker.marketdata.configuration.ExchangeConfig;
 import org.broker.marketdata.configuration.Topics;
-import org.broker.marketdata.configuration.WebsocketClientConfig;
-import org.broker.marketdata.exchange.bitmex.ExchangeHandler;
-import org.broker.marketdata.protos.normalizer.QuoteNormalizer;
+import org.broker.marketdata.exchange.bitmex.BitmexConfig;
+import org.broker.marketdata.protos.normilizer.QuoteNormalizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.function.Function;
 
-@Component
-public class WebSocketClientVerticle extends AbstractVerticle implements VerticleCommon {
+public class WebsocketClientVerticle extends AbstractVerticle implements VerticleCommon {
 
-  private static final Logger logger = LoggerFactory.getLogger(WebSocketClientVerticle.class);
+  private static final Logger logger = LoggerFactory.getLogger(WebsocketClientVerticle.class);
 
-  private final ExchangeHandler exchangeHandler;
-  private final WebsocketClientConfig websocketClientConfig;
+  private final ExchangeConfig exchangeConfig;
+  private final QuoteNormalizer quoteNormalizer;
 
-  @Autowired
-  public WebSocketClientVerticle(ExchangeHandler exchangeHandler
-    , WebsocketClientConfig websocketClientConfig) {
-    this.exchangeHandler = exchangeHandler;
-    this.websocketClientConfig = websocketClientConfig;
-    logger.info("{} configuration fetched: {}", WebsocketClientConfig.class.getSimpleName(), websocketClientConfig);
+  public WebsocketClientVerticle(ExchangeConfig exchangeConfig, QuoteNormalizer quoteNormalizer) {
+    this.exchangeConfig = exchangeConfig;
+    this.quoteNormalizer = quoteNormalizer;
+    logger.info("{} configuration fetched: {}", BitmexConfig.class.getSimpleName(), exchangeConfig);
   }
 
   @Override
@@ -47,6 +42,7 @@ public class WebSocketClientVerticle extends AbstractVerticle implements Verticl
     Future<WebSocket> webSocketFuture = getHttpClient()
       .webSocket(getWebSocketConfiguration());
 
+    logger.info("webSocketFuture...");
     webSocketFuture
       .onFailure(throwable -> logger.error(throwable.getMessage()))
       .compose(this::isConnect)
@@ -62,8 +58,8 @@ public class WebSocketClientVerticle extends AbstractVerticle implements Verticl
 
   private HttpClientOptions getHttpClientOptions() {
     return new HttpClientOptions()
-      .setMaxWebSocketFrameSize(websocketClientConfig.getMaxWebSocketFrameSize())
-      .setMaxWebSocketMessageSize(websocketClientConfig.getMaxWebSocketMessageSize());
+      .setMaxWebSocketFrameSize(exchangeConfig.getMaxWebSocketFrameSize())
+      .setMaxWebSocketMessageSize(exchangeConfig.getMaxWebSocketMessageSize());
   }
 
   private Handler<AsyncResult<WebSocket>> eventHandler(Promise<Void> startPromise) {
@@ -85,14 +81,14 @@ public class WebSocketClientVerticle extends AbstractVerticle implements Verticl
       // Used to log raw price
       vertx.eventBus().publish(Topics.TOPIC_RAW_MESSAGE, buffer.toString());
       // Used as internal quote
-      QuoteNormalizer.stringToQuote(buffer.toString())
+      quoteNormalizer.stringToQuote(buffer.toString())
         .forEach(quote -> vertx.eventBus().publish(Topics.TOPIC_INTERNAL_QUOTE, quote));
     };
   }
 
   private Function<WebSocket, Future<WebSocket>> subscribe() {
     return webSocket -> {
-      final JsonObject subcription = websocketClientConfig.buildSubscription();
+      final JsonObject subcription = exchangeConfig.buildSubscription();
       logger.info("Subscribing to: {}", subcription.encode());
       webSocket.writeTextMessage(subcription.toString());
       return Future.succeededFuture(webSocket);
@@ -100,6 +96,7 @@ public class WebSocketClientVerticle extends AbstractVerticle implements Verticl
   }
 
   private Future<WebSocket> isConnect(WebSocket webSocket) {
+    System.out.println("isConnect");
     if (!webSocket.isClosed()) {
       logger.info("Connected!");
     } else {
@@ -110,9 +107,9 @@ public class WebSocketClientVerticle extends AbstractVerticle implements Verticl
 
   private WebSocketConnectOptions getWebSocketConfiguration() {
     return new WebSocketConnectOptions()
-      .setHost(websocketClientConfig.getHost())
-      .setPort(websocketClientConfig.getPort())
-      .setURI(websocketClientConfig.getPath())
+      .setHost(exchangeConfig.getHost())
+      .setPort(exchangeConfig.getPort())
+      .setURI(exchangeConfig.getPath())
       .setSsl(true);
   }
 }
