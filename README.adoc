@@ -1,6 +1,6 @@
 = Broker-marketdata
 
-== New features from branch "springboot-vertx":
+== New features from branch "binance":
 * Added Binance
     - Refactor the Websocket client in order to be reusable
     - Created the concept of adapter for Binance and BitMEX
