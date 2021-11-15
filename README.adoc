@@ -1,5 +1,12 @@
 = Broker-marketdata
 
+== New features from branch "binance":
+* Added Binance
+    - Refactor the Websocket client in order to be reusable
+    - Created the concept of adapter for Binance and BitMEX
+    - Split Configuration and quotes Normalization by adapter
+    - Added unit test for Binance
+
 == New features from branch "springboot-vertx":
 
 * Introduced Spring Boot
@@ -131,7 +138,7 @@ To deploy the MarketDataService with PostgreSql
 
     docker-compose up -d
 
-To deploy the MarketDataService with PostgreSql
+To deploy only PostgreSql
 
 * Go to <WORKSPACE>/broker_marketdata/cocker-compose/postgresql
 * execute

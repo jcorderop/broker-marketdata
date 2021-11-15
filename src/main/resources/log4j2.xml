@@ -21,7 +21,7 @@
       <logger name="org.springframework" level="info">
         <AppenderRef ref="AppAppender"/>
       </logger>
-      <logger name="org.broker" level="debug">
+      <logger name="org.broker" level="info">
         <AppenderRef ref="AppAppender"/>
       </logger>
       <logger name="io.netty" level="info">
@@ -33,7 +33,7 @@
 
       <logger name="org.flywaydb.core" level="info"/>
 
-      <logger name="LoggingVerticle" level="debug">
+      <logger name="LoggingVerticle" level="error">
         <AppenderRef ref="AsyncAppender" />
       </logger>
 
