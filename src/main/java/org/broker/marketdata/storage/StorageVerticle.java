@@ -5,7 +5,7 @@ import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.eventbus.Message;
 import org.broker.marketdata.common.VerticleCommon;
-import org.broker.marketdata.configuration.DatabaseConfig;
+import org.broker.marketdata.configuration.ImmutableDatabaseConfig;
 import org.broker.marketdata.configuration.Topics;
 import org.broker.marketdata.protos.Quote;
 import org.slf4j.Logger;
@@ -18,15 +18,15 @@ public class StorageVerticle extends AbstractVerticle implements VerticleCommon 
 
   private static final Logger logger = LoggerFactory.getLogger(StorageVerticle.class);
 
-  private final DatabaseConfig databaseConfig;
+  private final ImmutableDatabaseConfig immutableDatabaseConfig;
 
   @Autowired
   private StorageService storageService;
 
   @Autowired
-  public StorageVerticle(DatabaseConfig databaseConfig) {
-    this.databaseConfig = databaseConfig;
-    logger.info("{} configuration fetched: {}", DatabaseConfig.class.getSimpleName(), databaseConfig);
+  public StorageVerticle(ImmutableDatabaseConfig immutableDatabaseConfig) {
+    this.immutableDatabaseConfig = immutableDatabaseConfig;
+    logger.info("{} configuration fetched: {}", ImmutableDatabaseConfig.class.getSimpleName(), immutableDatabaseConfig);
   }
 
   @Override
@@ -47,7 +47,7 @@ public class StorageVerticle extends AbstractVerticle implements VerticleCommon 
   private Future<Void> createBusConsumerEvent(Promise<Void> startPromise) {
     logger.info("Creating consumer Vertx Bus, topic: {}", Topics.TOPIC_INTERNAL_QUOTE);
     vertx.eventBus()
-      .consumer(Topics.TOPIC_INTERNAL_QUOTE, this::insertNewQuote)
+      .consumer(Topics.TOPIC_STORAGE, this::insertNewQuote)
       .exceptionHandler(event -> {
         logger.error("Could not insert the a new Quote, {}", event.getMessage());
         throw new IllegalStateException(event);

@@ -10,7 +10,7 @@ public class StorageService {
 
   private final QuoteRepository quoteRepository;
 
-  public void insertNewQuote(Quote quote) {
+  public void insertNewQuote(final Quote quote) {
     quoteRepository.save(QuoteRowMapper.mapQuoteEntityFromQuoteProto(quote));
   }
 }

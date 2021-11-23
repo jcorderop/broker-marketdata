@@ -16,14 +16,15 @@ public class WebsocketHandler implements Handler<ServerWebSocket> {
   private final QuoteBroadcast quoteBroadcast;
   private final String path;
 
-  public WebsocketHandler(String path, QuoteBroadcast quoteBroadcast) {
+  public WebsocketHandler(final String path,
+                          final QuoteBroadcast quoteBroadcast) {
     this.quoteBroadcast = quoteBroadcast;
     this.path = path;
     logger.info("WebsocketHandler Server Has been constructed.");
   }
 
   @Override
-  public void handle(ServerWebSocket ws) {
+  public void handle(final ServerWebSocket ws) {
     if (isValidPath(ws)) return;
 
     logger.info("Opening web socket connection: {} - {}"
@@ -39,14 +40,14 @@ public class WebsocketHandler implements Handler<ServerWebSocket> {
     ws.writeTextMessage(CONNECTED);
   }
 
-  private Handler<Void> onCloseHandler(ServerWebSocket ws) {
+  private Handler<Void> onCloseHandler(final ServerWebSocket ws) {
     return onClose -> {
       logger.info("Connection closed: {}", ws.textHandlerID());
       quoteBroadcast.unregister(ws);
     };
   }
 
-  private boolean isValidPath(ServerWebSocket ws) {
+  private boolean isValidPath(final ServerWebSocket ws) {
     if (!this.path.equalsIgnoreCase(ws.path())) {
       logger.warn("Connection rejected to this path: {}"
         , ws.path());
@@ -57,7 +58,7 @@ public class WebsocketHandler implements Handler<ServerWebSocket> {
     return false;
   }
 
-  private Handler<WebSocketFrame> frameHandler(ServerWebSocket ws) {
+  private Handler<WebSocketFrame> frameHandler(final ServerWebSocket ws) {
     return received -> {
       final String message = received.textData();
       logger.info("Message Received: {} from client {}", message, ws.textHandlerID());

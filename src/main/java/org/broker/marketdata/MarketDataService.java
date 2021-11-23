@@ -29,7 +29,7 @@ public class MarketDataService extends AbstractVerticle implements VerticleCommo
   public final BinanceAdapter binanceAdapter;
 
   @Override
-  public void start(Promise<Void> startPromise) throws Exception {
+  public void start(final Promise<Void> startPromise) throws Exception {
     deforeStartVerticle(logger, this.getClass().getName());
     vertx.exceptionHandler(getThrowableHandler());
     //ecodec used to send java objects
@@ -38,8 +38,8 @@ public class MarketDataService extends AbstractVerticle implements VerticleCommo
     startServices(startPromise);
   }
 
-  private void startServices(Promise<Void> startPromise) {
-    logger.info("Starting Market Data Service BITMEX Adapter...");
+  private void startServices(final Promise<Void> startPromise) {
+    logger.info("Starting Market Data Service Adapter...");
     vertx.deployVerticle(storageVerticle)
       .onFailure(startPromise::fail)
       .compose(next -> vertx.deployVerticle(loggingVerticle))

@@ -12,8 +12,10 @@ ws:
       maxWebSocketFrameSize: 1024000
       maxWebSocketMessageSize: 1024000
       symbol:
-        - XBTUSD
-        - SOLUSD
+        XBTUSD: BTCUSD
+        ETHUSD: ETHUSD
+        XRPUSD: XRPUSD
+        SOLUSD: SOLUSD
   binance:
     client:
       source: "BNB"
@@ -23,8 +25,10 @@ ws:
       maxWebSocketFrameSize: 1024000
       maxWebSocketMessageSize: 1024000
       symbol:
-        - btcusdt
-        - solusdt
+        BTCUSDT: BTCUSD
+        ETHUSDT: ETHUSD
+        XRPUSDT: XRPUSD
+        SOLUSDT: SOLUSD
 server:
   port: 8080
   error:

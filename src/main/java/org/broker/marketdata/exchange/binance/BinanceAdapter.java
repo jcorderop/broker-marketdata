@@ -1,40 +1,22 @@
 package org.broker.marketdata.exchange.binance;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Promise;
-import org.broker.marketdata.client.WebsocketClientVerticle;
-import org.broker.marketdata.common.VerticleCommon;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.broker.marketdata.client.AbstractWebsocketClientVerticle;
+import org.broker.marketdata.configuration.ExchangeConfig;
+import org.broker.marketdata.protos.normilizer.QuoteNormalizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BinanceAdapter extends AbstractVerticle implements VerticleCommon {
-
-  private static final Logger logger = LoggerFactory.getLogger(BinanceAdapter.class);
+public class BinanceAdapter extends AbstractWebsocketClientVerticle {
 
   @Autowired
-  private BinanceConfig binanceConfig;
+  private final ExchangeConfig binanceConfig;
   @Autowired
-  private BinanceQuoteNormalizer binanceQuoteNormalizer;
+  private final QuoteNormalizer binanceQuoteNormalizer;
 
-  @Override
-  public void start(Promise<Void> startPromise) throws Exception {
-    deforeStartVerticle(logger, this.getClass().getName());
-    createWebSocketClient(startPromise);
-  }
-
-  private void createWebSocketClient(Promise<Void> startPromise) {
-    vertx.deployVerticle(new WebsocketClientVerticle(binanceConfig, binanceQuoteNormalizer))
-      .onFailure(event -> {
-        logger.error("Binance Adapter failure, component could not be deployed...");
-        event.printStackTrace();
-        startPromise.fail(event);
-      })
-      .onSuccess(event -> {
-        logger.info("Binance Adapter has been deployed successfully...");
-        completeVerticle(startPromise, this.getClass().getName(), logger);
-      });
+  public BinanceAdapter(final ExchangeConfig binanceConfig, final QuoteNormalizer binanceQuoteNormalizer) {
+    super(binanceConfig, binanceQuoteNormalizer, BinanceAdapter.class.getSimpleName());
+    this.binanceConfig = binanceConfig;
+    this.binanceQuoteNormalizer = binanceQuoteNormalizer;
   }
 }

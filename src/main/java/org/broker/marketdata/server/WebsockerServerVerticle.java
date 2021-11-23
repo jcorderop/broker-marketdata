@@ -23,7 +23,8 @@ public class WebsockerServerVerticle extends AbstractVerticle implements Verticl
   private final WebsocketHandler webSocketHandler;
 
   @Autowired
-  public WebsockerServerVerticle(WebsocketServerConfig websocketServerConfig, QuoteBroadcast quoteBroadcast) {
+  public WebsockerServerVerticle(final WebsocketServerConfig websocketServerConfig,
+                                 final QuoteBroadcast quoteBroadcast) {
     this.quoteBroadcast = quoteBroadcast;
     this.websocketServerConfig = websocketServerConfig;
     logger.info("{} configuration fetched: {}", WebsocketServerConfig.class.getSimpleName(), websocketServerConfig);
@@ -33,7 +34,7 @@ public class WebsockerServerVerticle extends AbstractVerticle implements Verticl
   }
 
   @Override
-  public void start(Promise<Void> startPromise) throws Exception {
+  public void start(final Promise<Void> startPromise) throws Exception {
     deforeStartVerticle(logger, this.getClass().getName());
     vertx.deployVerticle(subscriptionQuoteVerticle)
       .onFailure(subscriptionFailureHandler(startPromise))
@@ -41,7 +42,7 @@ public class WebsockerServerVerticle extends AbstractVerticle implements Verticl
       .compose(next -> createWebSocketServer(startPromise));
   }
 
-  private Handler<Throwable> subscriptionFailureHandler(Promise<Void> startPromise) {
+  private Handler<Throwable> subscriptionFailureHandler(final Promise<Void> startPromise) {
     return event -> {
       logger.error("Publish event quote could not start, {}", event.getMessage());
       startPromise.fail(event);

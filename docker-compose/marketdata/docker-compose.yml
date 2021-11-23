@@ -37,6 +37,33 @@ services:
       - postgresdev
     links:
       - postgresdev:database
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 15s
+        max_attempts: 3
+        window: 120s
+
+  grafana:
+    image: "grafana/grafana:latest"
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - mds-network
+    depends_on:
+      - postgresdev
+      - marketdataservice
+    links:
+      - postgresdev:database
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 15s
+        max_attempts: 3
+        window: 120s
 
 # permanent storage of data.
 # > docker volume rm marketdata-data-local

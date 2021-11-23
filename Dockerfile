@@ -1,5 +1,5 @@
 # Docker example using fatjar
-# - mvn clean install
+# - mvn clean package -Dmaven.test.skip=true
 # - docker build . -t jcorderop/broker-marketdata
 # - docker run -e SPRING_PROFILES_ACTIVE='docker' -t -i -p 8900:8900 jcorderop/broker-marketdata
 # - docker push docker.io/jcorderop/broker-marketdata:latest
