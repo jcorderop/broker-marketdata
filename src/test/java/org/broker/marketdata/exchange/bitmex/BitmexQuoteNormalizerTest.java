@@ -4,14 +4,13 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import org.broker.marketdata.AbstractSpringBootTest;
 import org.broker.marketdata.protos.Quote;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,9 +19,7 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@SpringBootTest(properties="springBootApp.workOffline=true")
-@ActiveProfiles("test")
-class BitmexQuoteNormalizerTest {
+class BitmexQuoteNormalizerTest extends AbstractSpringBootTest {
 
   @Autowired
   BitmexConfig bitmexConfig;
@@ -87,7 +84,7 @@ class BitmexQuoteNormalizerTest {
       assertThat(quote.getAction())
         .isEqualTo(action);
       assertThat(quote.getSymbol())
-        .isEqualTo(symbol);
+        .isEqualTo(bitmexConfig.getSymbol().get(symbol));
       assertThat(quote.getMarkPrice())
         .isEqualTo(Optional.ofNullable(markPrice)
           .orElse(0.0));

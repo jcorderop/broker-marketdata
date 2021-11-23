@@ -3,19 +3,16 @@ package org.broker.marketdata;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.WebSocketConnectOptions;
-import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -24,10 +21,7 @@ import static org.broker.marketdata.server.WebsocketHandler.DISCONNECT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(properties="springBootApp.workOffline=true")
-@ActiveProfiles("test")
-@ExtendWith(VertxExtension.class)
-class MarketDataServiceTest {
+class MarketDataServiceTest extends AbstractVerticleSpringBootTest {
 
   private static final int EXPECTED_MESSAGES = 5;
   private static final int PORT = 8900;
@@ -52,6 +46,7 @@ class MarketDataServiceTest {
   void create_successfully_a_websocket_client_can_connect(Vertx vertx, VertxTestContext testContext) throws Throwable {
     //given
     var client = vertx.createHttpClient();
+    AtomicBoolean connected = new AtomicBoolean(false);
 
     //when
     client.webSocket(PORT, LOCALHOST, REALTIME_QUOTES)
@@ -59,8 +54,11 @@ class MarketDataServiceTest {
       .onComplete(testContext.succeeding(ws -> ws.handler(data -> {
           final var receivedData = data.toString();
           logger.info("Unit Test, Received message: {}", receivedData);
-          assertEquals(CONNECTED, receivedData);
-          closeConnection(testContext, client);
+          if (!connected.get()) {
+            assertEquals(CONNECTED, receivedData);
+            connected.set(true);
+            closeConnection(testContext, client);
+          }
         }))
       );
 

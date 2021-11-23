@@ -3,14 +3,13 @@ package org.broker.marketdata.exchange.binance;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
 import io.vertx.core.json.JsonObject;
+import org.broker.marketdata.AbstractSpringBootTest;
 import org.broker.marketdata.protos.Quote;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,9 +18,7 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@SpringBootTest(properties="springBootApp.workOffline=true")
-@ActiveProfiles("test")
-class BinanceQuoteNormalizerTest {
+class BinanceQuoteNormalizerTest extends AbstractSpringBootTest {
 
   @Autowired
   BinanceConfig binanceConfig;
@@ -53,7 +50,7 @@ class BinanceQuoteNormalizerTest {
     return message;
   }
 
-  @ParameterizedTest(name = "symbol={2},bidPrice={4},askPrice={6}")
+  @ParameterizedTest(name = "symbol={0},bidPrice={1},askPrice={2}")
   @CsvFileSource(resources = "/org/broker/marketdata/client/protos/normalizer/correctBinancePrices.csv", numLinesToSkip = 1)
   void create_a_complet_quote_from_bitmex_message_converted_to_internal_quote(String symbol
     , String bidPrice
@@ -81,7 +78,7 @@ class BinanceQuoteNormalizerTest {
       assertThat(quote.getAction())
         .isEqualTo(BinanceConfig.JSON_ACTION_UPDATE);
       assertThat(quote.getSymbol())
-        .isEqualTo(symbol);
+        .isEqualTo(binanceConfig.getSymbol().get(symbol));
       assertThat(quote.hasMarkPrice()).isFalse();
       assertThat(quote.getBidPrice())
         .isEqualTo(Double.valueOf(Optional.ofNullable(bidPrice)
@@ -100,7 +97,7 @@ class BinanceQuoteNormalizerTest {
 
   }
 
-  @ParameterizedTest(name = "symbol={2},bidPrice={4},askPrice={6}")
+  @ParameterizedTest(name = "symbol={0},bidPrice={1},askPrice={2}")
   @CsvFileSource(resources = "/org/broker/marketdata/client/protos/normalizer/invalidBinancePrices.csv", numLinesToSkip = 1)
   void invalid_quote_from_bitmex_message_converted_to_internal_quote(String symbol
     , String bidPrice

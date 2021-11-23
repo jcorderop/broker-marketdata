@@ -21,16 +21,16 @@ public class BinanceQuoteNormalizer implements QuoteNormalizer {
 
   private final BinanceConfig binanceConfig;
 
-  public List<Quote> stringToQuote(String message) {
+  public List<Quote> stringToQuote(final String message) {
     try {
       return parse(message);
     } catch (Exception e) {
-      logger.warn("Could not parse the source quote, {}", e.getMessage());
+      logger.warn("Could not parse the source quote, {}", e.getCause().getMessage());
       return new ArrayList<>();
     }
   }
 
-  private List<Quote> parse(String message) {
+  private List<Quote> parse(final String message) {
     final var quote = Quote.newBuilder();
     setCustomFields(quote);
     setJsonMessages(message, quote);
@@ -39,20 +39,20 @@ public class BinanceQuoteNormalizer implements QuoteNormalizer {
     return List.of(quote.build());
   }
 
-  private void setJsonMessages(String message, Quote.Builder quote) {
+  private void setJsonMessages(final String message, final Quote.Builder quote) {
     final DocumentContext messageContext = JsonPath.parse(message);
     quote.setAction(BinanceConfig.JSON_ACTION_UPDATE);
     quote.setTopic(BinanceConfig.JSON_TOPIC_INSTRUMENT);
-    quote.setSymbol(messageContext.read(BinanceConfig.JSON_SYMBOL));
     quote.setBidPrice(Double.parseDouble(messageContext.read(BinanceConfig.JSON_BID_PRICE)));
     quote.setAskPrice(Double.parseDouble(messageContext.read(BinanceConfig.JSON_ASK_PRICE)));
+    quote.setSymbol(binanceConfig.getSymbol().get(messageContext.read(BinanceConfig.JSON_SYMBOL)));
   }
 
-  private void setAlculatedValues(Quote.Builder quote) {
-    quote.setMidPrice((quote.getAskPrice()+quote.getBidPrice())/2);
+  private void setAlculatedValues(final Quote.Builder quote) {
+    quote.setMidPrice((quote.getAskPrice() + quote.getBidPrice()) / 2);
   }
 
-  private void setCustomFields(Quote.Builder quote) {
+  private void setCustomFields(final Quote.Builder quote) {
     quote.setSourceTimestamp(System.currentTimeMillis());
     quote.setArrivalTimestamp(System.currentTimeMillis());
     quote.setQuoteId(System.nanoTime());

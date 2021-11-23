@@ -1,15 +1,16 @@
 package org.broker.marketdata.storage;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Builder
 @ToString
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -57,4 +58,7 @@ public class QuoteEntity {
   @NonNull
   Long arrivalTimestamp;
   Long publishTimestamp;
+
+  @CreationTimestamp
+  private LocalDateTime creationTimestamp;
 }

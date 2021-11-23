@@ -2,16 +2,22 @@ package org.broker.marketdata.configuration;
 
 import io.vertx.core.json.JsonObject;
 
-import java.util.List;
+import java.util.Map;
 
 public interface ExchangeConfig {
   String getSource();
+
   String getHost();
+
   Integer getPort();
+
   String getPath();
-  List<String> getSymbol();
+
+  Map<String, String> getSymbol();
+
   Integer getMaxWebSocketFrameSize();
+
   Integer getMaxWebSocketMessageSize();
 
-  JsonObject buildSubscription ();
+  JsonObject buildSubscription();
 }

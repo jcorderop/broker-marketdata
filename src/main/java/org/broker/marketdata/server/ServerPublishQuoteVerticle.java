@@ -5,7 +5,6 @@ import com.google.protobuf.util.JsonFormat;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
-import io.vertx.core.json.JsonObject;
 import org.broker.marketdata.common.VerticleCommon;
 import org.broker.marketdata.configuration.Topics;
 import org.broker.marketdata.protos.Quote;
@@ -18,7 +17,7 @@ public class ServerPublishQuoteVerticle extends AbstractVerticle implements Vert
 
   private final QuoteBroadcast quoteBroadcast;
 
-  public ServerPublishQuoteVerticle(QuoteBroadcast quoteBroadcast) {
+  public ServerPublishQuoteVerticle(final QuoteBroadcast quoteBroadcast) {
     this.quoteBroadcast = quoteBroadcast;
     logger.info("ServerPublishQuoteVerticle Server Has been constructed.");
   }
@@ -31,25 +30,28 @@ public class ServerPublishQuoteVerticle extends AbstractVerticle implements Vert
     completeVerticle(startPromise, this.getClass().getName(), logger);
   }
 
-  private void pushQuote(Quote quote) {
-    quoteBroadcast.getConnections().values().parallelStream().forEach(ws -> {
-      logger.debug("PUBLISHING QUOTES: {}", quote);
-      //ws.writeBinaryMessage(Buffer.buffer(quote.toByteArray()));
-      createJsonClient(quote)
-        .onFailure(event -> logger.error("Message could not be publish, {}",event.getMessage()))
-        .onSuccess(ws::writeTextMessage);
-    });
+  private void pushQuote(final Quote quote) {
+    final var finalQuote = Quote.newBuilder(quote)
+      .setPublishTimestamp(System.currentTimeMillis())
+      .build();
+    //ws.writeBinaryMessage(Buffer.buffer(quote.toByteArray()));
+    brodcastMessage(finalQuote)
+      .onComplete(event -> vertx.eventBus()
+        .publish(Topics.TOPIC_STORAGE, finalQuote));
   }
 
-  private Future<String> createJsonClient(final Quote quote) {
-    try {
-      final JsonObject jsonObject = new JsonObject(JsonFormat.printer().print(quote));
-      final long publishTimestamp = System.currentTimeMillis();
-      jsonObject.put("publishTimestamp", publishTimestamp);
-      jsonObject.put("latency_ms", (publishTimestamp - Long.parseLong(jsonObject.getString("arrivalTimestamp"))));
-      return Future.succeededFuture(jsonObject.encode());
-    } catch (InvalidProtocolBufferException e) {
-      return Future.failedFuture(e);
-    }
+  private Future<Void> brodcastMessage(final Quote finalQuote) {
+    quoteBroadcast.getConnections()
+      .values()
+      .parallelStream()
+      .forEach(ws -> {
+        logger.debug("PUBLISHING QUOTES: {}", finalQuote);
+        try {
+          ws.writeTextMessage(JsonFormat.printer().print(finalQuote));
+        } catch (InvalidProtocolBufferException e) {
+          logger.warn("Quote could not be publish...");
+        }
+      });
+    return Future.succeededFuture();
   }
 }

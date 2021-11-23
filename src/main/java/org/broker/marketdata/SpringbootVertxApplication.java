@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 import javax.annotation.PostConstruct;
 
 @SpringBootApplication
+@ConfigurationPropertiesScan
 public class SpringbootVertxApplication {
 
   @Autowired
@@ -17,7 +19,6 @@ public class SpringbootVertxApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootVertxApplication.class, args);
 	}
-
 
   @Value("${springBootApp.workOffline:false}")
   private boolean workOffline = false;

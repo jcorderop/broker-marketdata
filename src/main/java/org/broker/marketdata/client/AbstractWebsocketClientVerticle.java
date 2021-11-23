@@ -10,39 +10,41 @@ import io.vertx.core.json.JsonObject;
 import org.broker.marketdata.common.VerticleCommon;
 import org.broker.marketdata.configuration.ExchangeConfig;
 import org.broker.marketdata.configuration.Topics;
-import org.broker.marketdata.exchange.bitmex.BitmexConfig;
 import org.broker.marketdata.protos.normilizer.QuoteNormalizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.function.Function;
 
-public class WebsocketClientVerticle extends AbstractVerticle implements VerticleCommon {
+public abstract class AbstractWebsocketClientVerticle extends AbstractVerticle implements VerticleCommon {
 
-  private static final Logger logger = LoggerFactory.getLogger(WebsocketClientVerticle.class);
+  private static final Logger logger = LoggerFactory.getLogger(AbstractWebsocketClientVerticle.class);
 
   private final ExchangeConfig exchangeConfig;
   private final QuoteNormalizer quoteNormalizer;
+  private final String adapterName;
 
-  public WebsocketClientVerticle(ExchangeConfig exchangeConfig, QuoteNormalizer quoteNormalizer) {
+  public AbstractWebsocketClientVerticle(final ExchangeConfig exchangeConfig,
+                                         final QuoteNormalizer quoteNormalizer,
+                                         final String adapterName) {
     this.exchangeConfig = exchangeConfig;
     this.quoteNormalizer = quoteNormalizer;
-    logger.info("{} configuration fetched: {}", BitmexConfig.class.getSimpleName(), exchangeConfig);
+    this.adapterName = adapterName;
+    logger.info("{} configuration fetched: {}", adapterName, exchangeConfig);
   }
 
   @Override
-  public void start(Promise<Void> startPromise) throws Exception {
+  public void start(final Promise<Void> startPromise) throws Exception {
     deforeStartVerticle(logger, this.getClass().getName());
     createWebSocketClient(startPromise);
   }
 
-  private void createWebSocketClient(Promise<Void> startPromise) {
-    logger.info("Creating WebSocket Client...");
+  private void createWebSocketClient(final Promise<Void> startPromise) {
+    logger.info("{} creating WebSocket Client...", adapterName);
 
     Future<WebSocket> webSocketFuture = getHttpClient()
       .webSocket(getWebSocketConfiguration());
 
-    logger.info("webSocketFuture...");
     webSocketFuture
       .onFailure(throwable -> logger.error(throwable.getMessage()))
       .compose(this::isConnect)
@@ -62,45 +64,46 @@ public class WebsocketClientVerticle extends AbstractVerticle implements Verticl
       .setMaxWebSocketMessageSize(exchangeConfig.getMaxWebSocketMessageSize());
   }
 
-  private Handler<AsyncResult<WebSocket>> eventHandler(Promise<Void> startPromise) {
+  private Handler<AsyncResult<WebSocket>> eventHandler(final Promise<Void> startPromise) {
     return webSocketAsyncResult -> {
       if (webSocketAsyncResult.succeeded()) {
         webSocketAsyncResult.result().handler(onEvent());
         // Till here the vertx is complete
         completeVerticle(startPromise, this.getClass().getName(), logger);
       } else if (webSocketAsyncResult.failed()) {
-        logger.error("Failure during connection...");
+        logger.error("{} failure during connection...", adapterName);
         webSocketAsyncResult.cause().printStackTrace();
-        throw new IllegalStateException("Something went wrong during the websocket connection, websocket client could not be initialized.");
+        throw new IllegalStateException(adapterName + " Something went wrong during the websocket connection, websocket client could not be initialized.");
       }
     };
   }
 
   private Handler<Buffer> onEvent() {
     return buffer -> {
-      // Used to log raw price
-      vertx.eventBus().publish(Topics.TOPIC_RAW_MESSAGE, buffer.toString());
       // Used as internal quote
       quoteNormalizer.stringToQuote(buffer.toString())
         .forEach(quote -> vertx.eventBus().publish(Topics.TOPIC_INTERNAL_QUOTE, quote));
+
+      // Used to log raw price
+      vertx.eventBus().publish(Topics.TOPIC_RAW_MESSAGE, buffer.toString());
     };
   }
 
   private Function<WebSocket, Future<WebSocket>> subscribe() {
     return webSocket -> {
       final JsonObject subcription = exchangeConfig.buildSubscription();
-      logger.info("Subscribing to: {}", subcription.encode());
+      logger.info("{} subscribing to: {}", adapterName, subcription.encode());
       webSocket.writeTextMessage(subcription.toString());
       return Future.succeededFuture(webSocket);
     };
   }
 
-  private Future<WebSocket> isConnect(WebSocket webSocket) {
-    System.out.println("isConnect");
+  private Future<WebSocket> isConnect(final WebSocket webSocket) {
+    logger.info("{} is connecting...", adapterName);
     if (!webSocket.isClosed()) {
-      logger.info("Connected!");
+      logger.info("{} Connected!", adapterName);
     } else {
-      logger.error("Connection Failed!");
+      logger.error("{} Connection Failed!", adapterName);
     }
     return Future.succeededFuture(webSocket);
   }
