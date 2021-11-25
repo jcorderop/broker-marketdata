@@ -134,11 +134,19 @@ IMPORTANT: If you run the service locally, you have to deploy PostgreSql first, 
 
     https://binance-docs.github.io/apidocs/spot/
 
+== Spring Boot
+
+* Spring Boot Web
+* Spring Boot Jpa
+* Spring Boot Actuator
+
+=== Spring Boot Help
+
+* https://spring.io/projects/spring-boot
+
 == Vertx
 
 image:https://img.shields.io/badge/vert.x-4.2.0-purple.svg[link="https://vertx.io"]
-
-This application was generated using http://start.vertx.io
 
 === Vertx Help
 
