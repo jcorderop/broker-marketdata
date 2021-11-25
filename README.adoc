@@ -106,7 +106,7 @@ IMPORTANT: If you run the service locally, you have to deploy PostgreSql first, 
 
 === BitMex API Help
 
-    https://www.bitmex.com/app/apiOverview
+* https://www.bitmex.com/app/apiOverview[Bitmex]
 
 == Binance API:
 
@@ -132,7 +132,7 @@ IMPORTANT: If you run the service locally, you have to deploy PostgreSql first, 
 
 === Binance API Help
 
-    https://binance-docs.github.io/apidocs/spot/
+* https://binance-docs.github.io/apidocs/spot/[Binance]
 
 == Spring Boot
 
@@ -142,7 +142,7 @@ IMPORTANT: If you run the service locally, you have to deploy PostgreSql first, 
 
 === Spring Boot Help
 
-* https://spring.io/projects/spring-boot
+* https://spring.io/projects/spring-boot[Spring Boot]
 
 == Vertx
 
@@ -172,7 +172,7 @@ To build InternalPrice.proto:
 
 === Google Protocol Buffers Help
 
-https://developers.google.com/protocol-buffers/docs/javatutorial
+* https://developers.google.com/protocol-buffers/docs/javatutorial[Google Protocol Buffer]
 
 == Storage
 
@@ -196,6 +196,10 @@ To deploy only PostgreSql
 * execute
 
     docker-compose up -d
+
+=== Docker Help
+
+* https://docs.docker.com/[Docker]
 
 == Websocket MarketDataService Test
 
@@ -246,5 +250,7 @@ image::grafana/Dashboard.PNG[]
 
 IMPORTANT: If you run Grafana and Posgresql inside Docker and the MarketdataService in your local PC, the time is shift the timezone
 
+=== Grafana help
 
+* https://grafana.com/docs/[Grafana]
 
