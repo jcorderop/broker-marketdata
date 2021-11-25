@@ -5,12 +5,14 @@
 * Added Grafana
 - Added Grafana as part of marketdata docker-compose
 - go to section Grafana and follow the instruction to set-up and import the dashboard
+- the dashboard shows max latency in ms per second and quotes per second
 * General enhancements
 - To reduce Verticles, WebsocketClientVerticle changed to abstract
 - Added abstract test classes to simplify code
 - Refactored configuration and making database configuration immutable
-- publish time now is part of the protoc quote and the storage is stored in progress after the quote is published
-- symbol configuration was changed to map to normalize to internal same symbol
+- Publish time now is part of the protoc quote and the quote is stored in progress after the published time is added
+- Latency is removed when the quote is publish and now grafana is used for visualization
+- Symbol configuration was changed to map and normalize from exchanges to internal same symbols
 
 == New features from branch "binance":
 
@@ -23,7 +25,7 @@
 == New features from branch "springboot-vertx":
 
 * Introduced Spring Boot
-- Used to simplify code injecting instances and constructors.
+- Used to simplify code injecting instances, configuration and constructors.
 - Simplify configuration.
 - Reduce dependencies in POM.
 - Verticles are independent and keep communicating asynchronously via the Vertx-Bus.
