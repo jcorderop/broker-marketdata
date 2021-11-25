@@ -39,7 +39,7 @@ image::MarketDataService.PNG[]
 
 * MarketDataService is used to normalize prices from BitMex to internal quotes.
 * It has a client websocket that connects to BitMEX.
-* Data received is sent via vertx bus to two topics:
+* Data received is sent via vertx bus to 3 topics:
 
     Topic: raw_data
         * raw quotes recevied from BitMex are logged asynchronous for audit
@@ -47,10 +47,13 @@ image::MarketDataService.PNG[]
 * Quotes are normalized into a Google Proto Buffer object and this object is sent to a different topic simultaneously:
 
    Topic: internal_quotes
-        * Two components are reading from this topic
-        1) StorageVerticle that stores the internal normilized prices
+        1) The Quote proto received is converted to json
         2) WebsocketServerVerticle, this component publish the mesages to clients
         subscribed for internal use
+        3) The Quote proto is sent to be storage after the publish time is added
+
+   Topic: storage
+        1) StorageVerticle stores in database the quote using JPA/Entity
 
 == Project
 
