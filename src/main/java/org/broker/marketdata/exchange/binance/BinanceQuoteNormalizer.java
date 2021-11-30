@@ -25,7 +25,7 @@ public class BinanceQuoteNormalizer implements QuoteNormalizer {
     try {
       return parse(message);
     } catch (Exception e) {
-      logger.warn("Could not parse the source quote, {}", e.getCause().getMessage());
+      logger.warn("Could not parse the source quote, {}", e.getMessage());
       return new ArrayList<>();
     }
   }
