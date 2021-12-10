@@ -30,7 +30,7 @@ services:
     ports:
       - "8900:8900"
     environment:
-      SPRING_PROFILES_ACTIVE: "docker"
+      SPRING_PROFILES_ACTIVE: "it"
     networks:
       - mds-network
     depends_on:
