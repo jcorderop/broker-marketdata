@@ -1,5 +1,27 @@
 = Broker-marketdata
 
+== MarketDataService Project Description:
+
+image::MarketDataService.PNG[]
+
+* MarketDataService is used to normalize prices from BitMex to internal quotes.
+* It has a client websocket that connects to BitMEX.
+* Data received is sent via vertx bus to 3 topics:
+
+    Topic: raw_data
+        * raw quotes recevied from BitMex are logged asynchronous for audit
+
+* Quotes are normalized into a Google Proto Buffer object and this object is sent to a different topic simultaneously:
+
+   Topic: internal_quotes
+        1) The Quote proto received is converted to json
+        2) WebsocketServerVerticle, this component publish the mesages to clients
+        subscribed for internal use
+        3) The Quote proto is sent to be storage after the publish time is added
+
+   Topic: storage
+        1) StorageVerticle stores in database the quote using JPA/Entity
+
 == New features from branch "grafana":
 
 * Added Grafana
@@ -34,28 +56,6 @@
 - Added H2 for the unit test.
 - Added latency measurement from the time the tick arrives to when it is published, subscribe to ws://localhost:8900/realtime/quotes.
 * Original Vertx code in branch "vertx"
-
-== MarketDataService Project Description:
-
-image::MarketDataService.PNG[]
-
-* MarketDataService is used to normalize prices from BitMex to internal quotes.
-* It has a client websocket that connects to BitMEX.
-* Data received is sent via vertx bus to 3 topics:
-
-    Topic: raw_data
-        * raw quotes recevied from BitMex are logged asynchronous for audit
-
-* Quotes are normalized into a Google Proto Buffer object and this object is sent to a different topic simultaneously:
-
-   Topic: internal_quotes
-        1) The Quote proto received is converted to json
-        2) WebsocketServerVerticle, this component publish the mesages to clients
-        subscribed for internal use
-        3) The Quote proto is sent to be storage after the publish time is added
-
-   Topic: storage
-        1) StorageVerticle stores in database the quote using JPA/Entity
 
 == Project
 
