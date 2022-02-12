@@ -63,8 +63,9 @@ IMPORTANT: If you run Grafana and Posgresql inside Docker and the MarketdataServ
 
 * https://grafana.com/docs/[Grafana.com]
 
+== New features added:
 
-== New features from branch "grafana":
+=== Branch "grafana":
 
 * Added Grafana
 - Added Grafana as part of marketdata docker-compose
@@ -78,7 +79,7 @@ IMPORTANT: If you run Grafana and Posgresql inside Docker and the MarketdataServ
 - Latency is removed when the quote is publish and now grafana is used for visualization
 - Symbol configuration was changed to map and normalize from exchanges to internal same symbols
 
-== New features from branch "binance":
+=== Branch "binance":
 
 * Added Binance
 - Refactor the Websocket client in order to be reusable
@@ -86,7 +87,7 @@ IMPORTANT: If you run Grafana and Posgresql inside Docker and the MarketdataServ
 - Split Configuration and quotes Normalization by adapter
 - Added unit test for Binance
 
-== New features from branch "springboot-vertx":
+=== Branch "springboot-vertx":
 
 * Introduced Spring Boot
 - Used to simplify code injecting instances, configuration and constructors.
