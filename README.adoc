@@ -3,15 +3,15 @@
 === Content:
 
   + MarketDataService Project Description.
-  + Grafana Dashboard
-  + Project Build
-  + BitMEX API
-  + Binance API
-  + Vertx
-  + Google Protocol Buffers 
-  + Docker-compose
-  + Websocket MarketDataService Test
-  + New features added
+  + Grafana latency dashboard.
+  + Project Build.
+  + BitMEX API.
+  + Binance API.
+  + Vertx.
+  + Google Protocol Buffers.
+  + Docker-compose.
+  + Websocket MarketDataService Test.
+  + New features added.
 
 == MarketDataService Project Description:
 
@@ -38,7 +38,7 @@ image::MarketDataService.PNG[]
    Topic: storage
         1) StorageVerticle stores in database the quote using JPA/Entity
 
-== Grafana Dashboard
+== Grafana latency dashboard:
 
 * Once the docker is deployed, use admin/admin to login
 
