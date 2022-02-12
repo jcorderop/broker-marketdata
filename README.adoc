@@ -4,9 +4,11 @@
 
 image::MarketDataService.PNG[]
 
-* MarketDataService is used to normalize prices from BitMex to internal quotes.
-* It has a client websocket that connects to BitMEX.
+* MarketDataService is used to normalize prices from BitMex and Binance to internal quotes.
+- It has a client websocket that connects to BitMEX and Binance.
+* Internal quotes are published via websocket. To subcribe to internal prices go to section *Websocket MarketDataService Test*.
 * Data received is sent via vertx bus to 3 topics:
+- Vertx event bus:
 
     Topic: raw_data
         * raw quotes recevied from BitMex are logged asynchronous for audit
