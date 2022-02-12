@@ -1,5 +1,18 @@
 = Broker-marketdata
 
+=== Content
+
+  + MarketDataService Project Description.
+  + Grafana Dashboard
+  + Project Build
+  + BitMEX API
+  + Binance API
+  + Vertx
+  + Google Protocol Buffers 
+  + Docker-compose
+  + Websocket MarketDataService Test
+  + New features added
+
 == MarketDataService Project Description:
 
 image::MarketDataService.PNG[]
@@ -25,7 +38,7 @@ image::MarketDataService.PNG[]
    Topic: storage
         1) StorageVerticle stores in database the quote using JPA/Entity
 
-== Grafana
+== Grafana Dashboard
 
 * Once the docker is deployed, use admin/admin to login
 
@@ -63,44 +76,7 @@ IMPORTANT: If you run Grafana and Posgresql inside Docker and the MarketdataServ
 
 * https://grafana.com/docs/[Grafana.com]
 
-== New features added:
-
-=== Branch "grafana":
-
-* Added Grafana
-- Added Grafana as part of marketdata docker-compose
-- go to section Grafana and follow the instruction to set-up and import the dashboard
-- the dashboard shows max latency in ms per second and quotes per second
-* General enhancements
-- To reduce Verticles, WebsocketClientVerticle changed to abstract
-- Added abstract test classes to simplify code
-- Refactored configuration and making database configuration immutable
-- Publish time now is part of the protoc quote and the quote is stored in progress after the published time is added
-- Latency is removed when the quote is publish and now grafana is used for visualization
-- Symbol configuration was changed to map and normalize from exchanges to internal same symbols
-
-=== Branch "binance":
-
-* Added Binance
-- Refactor the Websocket client in order to be reusable
-- Created the concept of adapter for Binance and BitMEX
-- Split Configuration and quotes Normalization by adapter
-- Added unit test for Binance
-
-=== Branch "springboot-vertx":
-
-* Introduced Spring Boot
-- Used to simplify code injecting instances, configuration and constructors.
-- Simplify configuration.
-- Reduce dependencies in POM.
-- Verticles are independent and keep communicating asynchronously via the Vertx-Bus.
-- JPA+Hibernate to handle the storage.
-- Given the amount of quotes that can be stored the database is drop every restart during dev time.
-- Added H2 for the unit test.
-- Added latency measurement from the time the tick arrives to when it is published, subscribe to ws://localhost:8900/realtime/quotes.
-* Original Vertx code in branch "vertx"
-
-== Project
+== Project Build
 
 === Building
 
@@ -188,7 +164,7 @@ image:https://img.shields.io/badge/vert.x-4.2.0-purple.svg[link="https://vertx.i
 * https://groups.google.com/forum/?fromgroups#!forum/vertx[Vert.x User Group]
 * https://gitter.im/eclipse-vertx/vertx-users[Vert.x Gitter]
 
-== Google Protocol Buffers
+== Google Protocol Buffers 
 
 === Building
 
@@ -249,5 +225,42 @@ Once the service is running locally or in a container
 
     ws://localhost:8900/realtime/quotes
 
+
+== New features added
+
+=== Branch "grafana":
+
+* Added Grafana
+- Added Grafana as part of marketdata docker-compose
+- go to section Grafana and follow the instruction to set-up and import the dashboard
+- the dashboard shows max latency in ms per second and quotes per second
+* General enhancements
+- To reduce Verticles, WebsocketClientVerticle changed to abstract
+- Added abstract test classes to simplify code
+- Refactored configuration and making database configuration immutable
+- Publish time now is part of the protoc quote and the quote is stored in progress after the published time is added
+- Latency is removed when the quote is publish and now grafana is used for visualization
+- Symbol configuration was changed to map and normalize from exchanges to internal same symbols
+
+=== Branch "binance":
+
+* Added Binance
+- Refactor the Websocket client in order to be reusable
+- Created the concept of adapter for Binance and BitMEX
+- Split Configuration and quotes Normalization by adapter
+- Added unit test for Binance
+
+=== Branch "springboot-vertx":
+
+* Introduced Spring Boot
+- Used to simplify code injecting instances, configuration and constructors.
+- Simplify configuration.
+- Reduce dependencies in POM.
+- Verticles are independent and keep communicating asynchronously via the Vertx-Bus.
+- JPA+Hibernate to handle the storage.
+- Given the amount of quotes that can be stored the database is drop every restart during dev time.
+- Added H2 for the unit test.
+- Added latency measurement from the time the tick arrives to when it is published, subscribe to ws://localhost:8900/realtime/quotes.
+* Original Vertx code in branch "vertx"
 
 
