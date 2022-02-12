@@ -12,6 +12,7 @@ image::MarketDataService.PNG[]
         * raw quotes recevied from BitMex are logged asynchronous for audit
 
 * Quotes are normalized into a Google Proto Buffer object and this object is sent to a different topic simultaneously:
+- Vertx event bus:
 
    Topic: internal_quotes
         1) The Quote proto received is converted to json
@@ -21,6 +22,45 @@ image::MarketDataService.PNG[]
 
    Topic: storage
         1) StorageVerticle stores in database the quote using JPA/Entity
+
+== Grafana
+
+* Once the docker is deployed, use admin/admin to login
+
+=== Datasource configuration
+
+* Go to setting -> Configuration -> Data sources -> Add DataSource
+* Search for Postgresql
+
+    Host: database:5432
+    Database: marketdata
+    User/Password: defined in the yaml file
+    TLS/SSL Mode: disable
+
+* Save and test
+
+=== Import Dashboard
+
+* On create (+) -> Import
+* Under the new window -> Upload Json file
+* Go to
+
+    <WORKSPACE>/grafana/DashboardQuotes.json
+
+* Load
+* It will crate the dashboard Quotes as follows:
+
+- First section shows max latency in ms per second
+- Second section shows number of quotes per second
+
+image::grafana/Dashboard.PNG[]
+
+IMPORTANT: If you run Grafana and Posgresql inside Docker and the MarketdataService in your local PC, the time is shift the timezone
+
+=== Grafana help
+
+* https://grafana.com/docs/[Grafana.com]
+
 
 == New features from branch "grafana":
 
@@ -206,41 +246,5 @@ Once the service is running locally or in a container
 
     ws://localhost:8900/realtime/quotes
 
-== Grafana
 
-* Once the docker is deployed, use admin/admin to login
-
-=== Datasource configuration
-
-* Go to setting -> Configuration -> Data sources -> Add DataSource
-* Search for Postgresql
-
-    Host: database:5432
-    Database: marketdata
-    User/Password: defined in the yaml file
-    TLS/SSL Mode: disable
-
-* Save and test
-
-=== Import Dashboard
-
-* On create (+) -> Import
-* Under the new window -> Upload Json file
-* Go to
-
-    <WORKSPACE>/grafana/DashboardQuotes.json
-
-* Load
-* It will crate the dashboard Quotes as follows:
-
-- First section shows max latency in ms per second
-- Second section shows number of quotes per second
-
-image::grafana/Dashboard.PNG[]
-
-IMPORTANT: If you run Grafana and Posgresql inside Docker and the MarketdataService in your local PC, the time is shift the timezone
-
-=== Grafana help
-
-* https://grafana.com/docs/[Grafana.com]
 
